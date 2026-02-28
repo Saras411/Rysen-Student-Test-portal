@@ -17,10 +17,7 @@ if (!process.env.MONGO_URI) {
     console.warn("⚠️ WARNING: No MONGO_URI provided in environment variables.");
     console.warn("The server will start, but database operations will fail.");
 } else {
-    mongoose.connect(process.env.MONGO_URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    })
+    mongoose.connect(process.env.MONGO_URI)
         .then(() => console.log('✅ Connected to MongoDB Database'))
         .catch(err => console.error('❌ MongoDB Connection Error:', err));
 }

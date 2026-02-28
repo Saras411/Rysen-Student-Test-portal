@@ -493,8 +493,10 @@ function AdminResults() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const API_BASE = import.meta.env.VITE_API_URL || '';
+
   useEffect(() => {
-    fetch('/api/submissions')
+    fetch(`${API_BASE}/api/submissions`)
       .then(res => res.json())
       .then(json => {
         if (json.success) setData(json.data);
@@ -790,9 +792,10 @@ function ExamPage({ setView, settings }) {
       likert,
       hobbyProfile
     };
+    const API_BASE = import.meta.env.VITE_API_URL || '';
 
     try {
-      await fetch('/api/submissions', {
+      await fetch(`${API_BASE}/api/submissions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(sub)
