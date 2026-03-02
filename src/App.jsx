@@ -25,6 +25,7 @@ const QUESTIONS = {
   3: {
     A: {
       title: "Language & Communication",
+      passage: "“Meena was very excited about her school’s annual science exhibition. She worked hard for many days to prepare her project on saving electricity. She made colourful charts, wrote neat explanations, and even built a small model using waste material. On the day of the exhibition, Meena felt nervous, but she spoke confidently when visitors asked her questions. Her teachers praised her effort and encouraged other students to learn from her dedication.”",
       questions: [
         { id: "A1", type: "mcq", text: "Why was Meena excited about the science exhibition?", options: ["She won a prize", "She worked on a project about saving electricity", "She met her friends", "She got a day off school"], answer: 1 },
         { id: "A2", type: "mcq", text: "What was Meena's project about?", options: ["Plants and trees", "Saving electricity", "Water conservation", "Animal life"], answer: 1 },
@@ -99,6 +100,7 @@ const QUESTIONS = {
   4: {
     A: {
       title: "Language & Communication",
+      passage: "UNSEEN PASSAGE\nRead the passage carefully and answer the questions that follow:\n\nSaloni loved visiting her grandmother’s village during the summer holidays. The mornings were calm, filled with the sound of birds and rustling trees. Every day, Saloni helped her grandmother water plants and feed the cows. She learned that village life required patience, responsibility, and care for nature. Over time, Saloni realized that happiness did not always come from gadgets or busy city life, but from simple moments spent with loved ones.",
       questions: [
         { id: "A1", type: "mcq", text: "Why did Saloni enjoy visiting her grandmother's village?", options: ["It was crowded and noisy", "It had calm mornings and nature", "She played video games there", "It had a big mall"], answer: 1 },
         { id: "A2", type: "mcq", text: "What activity did Saloni do every day?", options: ["Watched television", "Played with friends", "Helped with plants and cows", "Slept all day"], answer: 2 },
@@ -187,6 +189,7 @@ const QUESTIONS = {
   5: {
     A: {
       title: "Language & Communication",
+      passage: "SECTION: A - LANGUAGE AND COMMUNICATION\n\nI love getting lost in the world of books. Oh, I mean the public library in my town. As you enter, you see tall shelves full of books. Quite overwhelming, I would say. But then, you’ll find people who can help you out.\nMy librarian can locate any book I need for my school project and suggest good recommendations as well. He also organises fun events like book clubs and storytelling sessions for children. Those are quite popular for sure! The librarian also keeps things in order and makes sure the books are returned to the right place.\nRecently though, it seems like libraries are attracting fewer people. Maybe they aren’t reading as much or perhaps they don’t have the time to read. It’s a bit sad because libraries used to be a community space where people with shared interests could gather and have discussions. Losing libraries means losing that valuable connection.\nSo, it's important for all of us to keep reading and to encourage others to do the same. Libraries aren't just about books; they're about bringing people together and sparking imagination.",
       questions: [
         { id: "A1", type: "mcq", text: "What does the author find overwhelming?", options: ["Talking to the librarian", "Seeing the tall shelves full of books", "Doing research for school projects", "Meeting people at libraries"], answer: 1 },
         { id: "A2", type: "mcq", text: "As per the passage, what does the librarian NOT do?", options: ["Make school projects for children", "Host book clubs at the library", "Organise sessions for children", "Suggest interesting books to read"], answer: 0 },
@@ -664,6 +667,14 @@ function AdminQuestions() {
       {section && (
         <div>
           <h3 style={{ color: "#c8a96e", marginBottom: 16 }}>Section {activeSection}: {section.title}</h3>
+
+          {section.passage && (
+            <div style={{ color: "#8a9bb0", fontSize: 13, lineHeight: 1.6, marginBottom: 20, padding: "12px 16px", background: "rgba(200,169,110,0.05)", borderLeft: "3px solid #c8a96e", borderRadius: 4, whiteSpace: "pre-wrap" }}>
+              <strong style={{ color: "#c8a96e" }}>Passage:</strong><br />
+              {section.passage}
+            </div>
+          )}
+
           {section.questions.map((q, i) => (
             <div key={q.id} style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 10, padding: "14px 16px", marginBottom: 10 }}>
               <p style={{ margin: "0 0 8px", color: "#c8d8e8", fontSize: 14 }}><strong style={{ color: "#c8a96e" }}>Q{i + 1}.</strong> {q.text}</p>
@@ -729,29 +740,7 @@ function ExamPage({ setView, settings }) {
   // Keep latest submit function for event listeners
   useEffect(() => { submitRef.current = submitExam; });
 
-  // Anti-cheat detection
-  useEffect(() => {
-    const handleViolation = () => {
-      if (step === "exam") {
-        alert("🚨 Security Violation Detected 🚨\nYou switched tabs or minimized the window. Your exam is being automatically submitted.");
-        if (submitRef.current) submitRef.current();
-      }
-    };
-
-    const handleVisibilityChange = () => {
-      if (document.hidden) handleViolation();
-    };
-
-    if (step === "exam") {
-      document.addEventListener("visibilitychange", handleVisibilityChange);
-      window.addEventListener("blur", handleViolation);
-    }
-
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-      window.removeEventListener("blur", handleViolation);
-    };
-  }, [step]);
+  // Anti-cheat detection removed based on user request
 
   // Auto-submit when time runs out
   useEffect(() => {
@@ -971,6 +960,12 @@ function ExamSection({ info, answers, setAnswers, currentSection, setCurrentSect
       {/* Questions */}
       <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 14, padding: "24px 24px" }}>
         <h3 style={{ color: "#c8a96e", margin: "0 0 20px", fontSize: 16 }}>Section {currentSection}: {section?.title}</h3>
+
+        {section?.passage && (
+          <div style={{ color: "#c8d8e8", fontSize: 14, lineHeight: 1.7, marginBottom: 24, padding: "16px", background: "rgba(200,169,110,0.05)", borderLeft: "4px solid #c8a96e", borderRadius: 4, whiteSpace: "pre-wrap" }}>
+            {section.passage}
+          </div>
+        )}
 
         {section?.isLikert ? (
           <LikertSection questions={section.questions} answers={answers} setAnswer={setAnswer} />
