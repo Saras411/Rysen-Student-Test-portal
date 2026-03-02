@@ -353,7 +353,21 @@ let submissionsDB = [];
 export default function App() {
   const [view, setView] = useState("home");
   const [adminAuth, setAdminAuth] = useState(false);
-  const [settings, setSettings] = useState({ timeLimits: { 3: 60, 4: 60, 5: 60 } });
+  const [settings, setSettings] = useState(() => {
+    const saved = localStorage.getItem("rysenSettings");
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        return { timeLimits: { 3: 60, 4: 60, 5: 60 } };
+      }
+    }
+    return { timeLimits: { 3: 60, 4: 60, 5: 60 } };
+  });
+
+  useEffect(() => {
+    localStorage.setItem("rysenSettings", JSON.stringify(settings));
+  }, [settings]);
 
   return (
     <div style={{ minHeight: "100vh", background: "#0f1923", color: "#e8e0d5", fontFamily: "'Georgia', serif" }}>
