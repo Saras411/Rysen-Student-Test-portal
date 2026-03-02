@@ -758,6 +758,8 @@ function ExamPage({ setView, settings }) {
     setStep("exam");
   }
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   async function submitExam() {
     clearInterval(timerRef.current);
     const band = info.band;
@@ -783,6 +785,7 @@ function ExamPage({ setView, settings }) {
     };
     const API_BASE = import.meta.env.VITE_API_URL || '';
 
+    setIsSubmitting(true);
     try {
       await fetch(`${API_BASE}/api/submissions`, {
         method: 'POST',
@@ -794,6 +797,7 @@ function ExamPage({ setView, settings }) {
     }
 
     setSubmission(sub);
+    setIsSubmitting(false);
     setStep("report");
   }
 
@@ -808,6 +812,7 @@ function ExamPage({ setView, settings }) {
       timer={timer}
       timeLimitSecs={timeLimitSecs}
       onSubmit={submitExam}
+      isSubmitting={isSubmitting}
     />
   );
   if (step === "report") return <ReportPage submission={submission} setView={setView} />;
@@ -889,11 +894,12 @@ function ExamInfoStep({ info, setInfo, onStart, setView, settings }) {
   );
 }
 
-function ExamSection({ info, answers, setAnswers, currentSection, setCurrentSection, timer, timeLimitSecs, onSubmit }) {
+function ExamSection({ info, answers, setAnswers, currentSection, setCurrentSection, timer, timeLimitSecs, onSubmit, isSubmitting }) {
   const band = info.band;
   const sections = Object.keys(QUESTIONS[band] || {});
   const section = QUESTIONS[band]?.[currentSection];
   const [confirmSubmit, setConfirmSubmit] = useState(false);
+  const [confirmNav, setConfirmNav] = useState(null); // stores the target section to navigate to
 
   function setAnswer(id, val) {
     setAnswers(a => ({ ...a, [id]: val }));
@@ -910,7 +916,7 @@ function ExamSection({ info, answers, setAnswers, currentSection, setCurrentSect
 
   const progress = sections.reduce((acc, s) => {
     const qs = QUESTIONS[band]?.[s]?.questions || [];
-    qs.forEach(q => { if (answers[q.id] !== undefined) acc++; });
+    qs.forEach(q => { if (answers[q.id] !== undefined && answers[q.id] !== "") acc++; });
     return acc;
   }, 0);
   const total = sections.reduce((acc, s) => acc + (QUESTIONS[band]?.[s]?.questions?.length || 0), 0);
@@ -937,14 +943,23 @@ function ExamSection({ info, answers, setAnswers, currentSection, setCurrentSect
         <div style={{ height: "100%", background: "linear-gradient(90deg, #c8a96e, #1a6b3c)", borderRadius: 2, width: `${total > 0 ? (progress / total) * 100 : 0}%`, transition: "width 0.3s" }} />
       </div>
 
-      {/* Section tabs */}
       <div style={{ display: "flex", gap: 8, marginBottom: 24, flexWrap: "wrap" }}>
         {sections.map(s => {
           const sqs = QUESTIONS[band]?.[s]?.questions || [];
-          const answered = sqs.filter(q => answers[q.id] !== undefined).length;
+          const answered = sqs.filter(q => answers[q.id] !== undefined && answers[q.id] !== "").length;
           const complete = answered === sqs.length;
           return (
-            <button key={s} onClick={() => setCurrentSection(s)} style={{
+            <button key={s} onClick={() => {
+              if (s !== currentSection) {
+                const curSqs = QUESTIONS[band]?.[currentSection]?.questions || [];
+                const curAnsCount = curSqs.filter(q => answers[q.id] !== undefined && answers[q.id] !== "").length;
+                if (curAnsCount < curSqs.length) {
+                  setConfirmNav(s);
+                } else {
+                  setCurrentSection(s);
+                }
+              }
+            }} style={{
               padding: "7px 14px", borderRadius: 8, border: "1px solid",
               borderColor: currentSection === s ? "#c8a96e" : complete ? "#1a6b3c" : "rgba(255,255,255,0.1)",
               background: currentSection === s ? "rgba(200,169,110,0.15)" : complete ? "rgba(26,107,60,0.1)" : "transparent",
@@ -981,7 +996,13 @@ function ExamSection({ info, answers, setAnswers, currentSection, setCurrentSect
         <button
           onClick={() => {
             const idx = sections.indexOf(currentSection);
-            if (idx > 0) setCurrentSection(sections[idx - 1]);
+            if (idx > 0) {
+              const targetS = sections[idx - 1];
+              const curSqs = QUESTIONS[band]?.[currentSection]?.questions || [];
+              const curAnsCount = curSqs.filter(q => answers[q.id] !== undefined && answers[q.id] !== "").length;
+              if (curAnsCount < curSqs.length) setConfirmNav(targetS);
+              else setCurrentSection(targetS);
+            }
           }}
           disabled={sections.indexOf(currentSection) === 0}
           style={{ background: "rgba(255,255,255,0.06)", color: "#8a9bb0", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "10px 20px", cursor: "pointer", fontSize: 13 }}
@@ -989,7 +1010,13 @@ function ExamSection({ info, answers, setAnswers, currentSection, setCurrentSect
 
         {sections.indexOf(currentSection) < sections.length - 1 ? (
           <button
-            onClick={() => setCurrentSection(sections[sections.indexOf(currentSection) + 1])}
+            onClick={() => {
+              const targetS = sections[sections.indexOf(currentSection) + 1];
+              const curSqs = QUESTIONS[band]?.[currentSection]?.questions || [];
+              const curAnsCount = curSqs.filter(q => answers[q.id] !== undefined && answers[q.id] !== "").length;
+              if (curAnsCount < curSqs.length) setConfirmNav(targetS);
+              else setCurrentSection(targetS);
+            }}
             style={{ background: "#1a3a6b", color: "#8ab0e0", border: "none", borderRadius: 8, padding: "10px 24px", cursor: "pointer", fontSize: 13, fontWeight: 600 }}
           >Next Section →</button>
         ) : (
@@ -1000,16 +1027,36 @@ function ExamSection({ info, answers, setAnswers, currentSection, setCurrentSect
         )}
       </div>
 
+      {confirmNav !== null && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000 }}>
+          <div style={{ background: "#1a2a3a", border: "1px solid rgba(200,50,50,0.4)", borderRadius: 16, padding: 36, maxWidth: 380, textAlign: "center", boxShadow: "0 8px 32px rgba(200,50,50,0.2)" }}>
+            <div style={{ fontSize: 40, marginBottom: 12 }}>⚠️</div>
+            <h3 style={{ color: "#e07070", margin: "0 0 10px" }}>Questions Not Attempted!</h3>
+            <p style={{ color: "#8a9bb0", fontSize: 14, marginBottom: 20 }}>You have unattempted questions in the current section. Are you sure you want to skip and proceed further?</p>
+            <div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
+              <button onClick={() => setConfirmNav(null)} style={{ background: "#1a3a6b", color: "#8ab0e0", border: "none", borderRadius: 8, padding: "10px 20px", cursor: "pointer", fontWeight: 600 }}>Go Back</button>
+              <button onClick={() => { setCurrentSection(confirmNav); setConfirmNav(null); }} style={{ background: "rgba(200,50,50,0.2)", color: "#e07070", border: "1px solid rgba(200,50,50,0.3)", borderRadius: 8, padding: "10px 20px", cursor: "pointer" }}>Skip & Proceed</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {confirmSubmit && (
         <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000 }}>
           <div style={{ background: "#1a2a3a", border: "1px solid rgba(200,169,110,0.4)", borderRadius: 16, padding: 36, maxWidth: 380, textAlign: "center" }}>
-            <div style={{ fontSize: 40, marginBottom: 12 }}>📤</div>
-            <h3 style={{ color: "#c8a96e", margin: "0 0 10px" }}>Submit Assessment?</h3>
-            <p style={{ color: "#8a9bb0", fontSize: 14, marginBottom: 20 }}>You have answered {progress} of {total} questions. Once submitted, you cannot go back.</p>
-            <div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
-              <button onClick={() => setConfirmSubmit(false)} style={{ background: "rgba(255,255,255,0.07)", color: "#8a9bb0", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "10px 20px", cursor: "pointer" }}>Cancel</button>
-              <button onClick={onSubmit} style={{ background: "#1a6b3c", color: "#fff", border: "none", borderRadius: 8, padding: "10px 20px", cursor: "pointer", fontWeight: 700 }}>Submit</button>
-            </div>
+            <div style={{ fontSize: 40, marginBottom: 12 }}>{isSubmitting ? "⏳" : "📤"}</div>
+            <h3 style={{ color: "#c8a96e", margin: "0 0 10px" }}>{isSubmitting ? "Generating Report..." : "Submit Assessment?"}</h3>
+            {!isSubmitting && (
+              <p style={{ color: "#8a9bb0", fontSize: 14, marginBottom: 20 }}>You have answered {progress} of {total} questions. Once submitted, you cannot go back.</p>
+            )}
+            {isSubmitting ? (
+              <p style={{ color: "#8a9bb0", fontSize: 14, marginTop: 10 }}>Please wait while we process your answers and generate your BASE Report.</p>
+            ) : (
+              <div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
+                <button onClick={() => setConfirmSubmit(false)} style={{ background: "rgba(255,255,255,0.07)", color: "#8a9bb0", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "10px 20px", cursor: "pointer" }}>Cancel</button>
+                <button onClick={onSubmit} style={{ background: "#1a6b3c", color: "#fff", border: "none", borderRadius: 8, padding: "10px 20px", cursor: "pointer", fontWeight: 700 }}>Submit</button>
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -1019,8 +1066,13 @@ function ExamSection({ info, answers, setAnswers, currentSection, setCurrentSect
 
 function QuestionBlock({ q, index, answer, setAnswer }) {
   return (
-    <div style={{ marginBottom: 28, paddingBottom: 24, borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-      <p style={{ color: "#c8d8e8", fontSize: 14, lineHeight: 1.7, margin: "0 0 12px" }}>
+    <div style={{ marginBottom: 28, paddingBottom: 24, borderBottom: "1px solid rgba(255,255,255,0.05)", position: "relative" }}>
+      {answer === undefined || answer === "" ? (
+        <div style={{ position: "absolute", right: 0, top: 0, background: "rgba(200,50,50,0.15)", color: "#e07070", padding: "2px 8px", borderRadius: 4, fontSize: 11, border: "1px solid rgba(200,50,50,0.3)" }}>
+          Unattempted
+        </div>
+      ) : null}
+      <p style={{ color: "#c8d8e8", fontSize: 14, lineHeight: 1.7, margin: "0 0 12px", paddingRight: 80 }}>
         <strong style={{ color: "#c8a96e" }}>Q{index + 1}.</strong> {q.text}
       </p>
       {q.type === "mcq" && q.options && (
