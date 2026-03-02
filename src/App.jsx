@@ -217,7 +217,17 @@ const QUESTIONS = {
         { id: "E27", text: "Studying feels like a burden to me." },
         { id: "E28", text: "When someone complains about me, I lose control easily." },
         { id: "E29", text: "I like to stay alone most of the time." },
-        { id: "E30", text: "Teachers are ready to help me when I need support." }
+        { id: "E30", text: "Teachers are ready to help me when I need support." },
+        { id: "E31", text: "I am often unhappy with my school." },
+        { id: "E32", text: "I have friendly relationships with most students." },
+        { id: "E33", text: "Teachers praise me for my work." },
+        { id: "E34", text: "I try to explain my mistakes instead of accepting them." },
+        { id: "E35", text: "I like sitting in the front seats in class." },
+        { id: "E36", text: "I often get low marks in examinations." },
+        { id: "E37", text: "I feel uncomfortable when teachers ask me questions in class." },
+        { id: "E38", text: "I share a friendly bond with my classmates." },
+        { id: "E39", text: "I wish there were more holidays in school." },
+        { id: "E40", text: "I get very angry when classmates joke with me." }
       ]
     }
   },
@@ -310,7 +320,17 @@ const QUESTIONS = {
         { id: "E27", text: "Studying feels like a burden to me." },
         { id: "E28", text: "When someone complains about me, I lose control easily." },
         { id: "E29", text: "I like to stay alone most of the time." },
-        { id: "E30", text: "Teachers are ready to help me when I need support." }
+        { id: "E30", text: "Teachers are ready to help me when I need support." },
+        { id: "E31", text: "I am often unhappy with my school." },
+        { id: "E32", text: "I have friendly relationships with most students." },
+        { id: "E33", text: "Teachers praise me for my work." },
+        { id: "E34", text: "I try to explain my mistakes instead of accepting them." },
+        { id: "E35", text: "I like sitting in the front seats in class." },
+        { id: "E36", text: "I often get low marks in examinations." },
+        { id: "E37", text: "I feel uncomfortable when teachers ask me questions in class." },
+        { id: "E38", text: "I share a friendly bond with my classmates." },
+        { id: "E39", text: "I wish there were more holidays in school." },
+        { id: "E40", text: "I get very angry when classmates joke with me." }
       ]
     }
   }
