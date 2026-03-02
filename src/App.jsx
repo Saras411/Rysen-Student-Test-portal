@@ -93,7 +93,17 @@ const QUESTIONS = {
         { id: "E12", text: "I am able to write down classwork properly." },
         { id: "E13", text: "I feel jealous of classmates whom I think are better than me." },
         { id: "E14", text: "Sometimes I feel that I have no close friends in school." },
-        { id: "E15", text: "I feel bored or sleepy during lessons." }
+        { id: "E15", text: "I feel bored or sleepy during lessons." },
+        { id: "E16", text: "I feel teachers do not pay attention to my problems." },
+        { id: "E17", text: "I often feel sad or upset in school." },
+        { id: "E18", text: "I like working together with my classmates." },
+        { id: "E19", text: "I am happy with my progress in studies." },
+        { id: "E20", text: "I feel neglected by teachers." },
+        { id: "E21", text: "I try to get my teacher’s attention in class." },
+        { id: "E22", text: "Studying feels like a burden to me." },
+        { id: "E23", text: "When someone complains about me, I lose control easily." },
+        { id: "E24", text: "I like to stay alone most of the time." },
+        { id: "E25", text: "Teachers are ready to help me when I need support." }
       ]
     }
   },
@@ -182,7 +192,17 @@ const QUESTIONS = {
         { id: "E17", text: "I find it easy to make friends." },
         { id: "E18", text: "I am satisfied with the way lessons are taught in my school." },
         { id: "E19", text: "I show my anger when I am not chosen for school activities." },
-        { id: "E20", text: "I join groups of students freely." }
+        { id: "E20", text: "I join groups of students freely." },
+        { id: "E21", text: "I feel teachers do not pay attention to my problems." },
+        { id: "E22", text: "I often feel sad or upset in school." },
+        { id: "E23", text: "I like working together with my classmates." },
+        { id: "E24", text: "I am happy with my progress in studies." },
+        { id: "E25", text: "I feel neglected by teachers." },
+        { id: "E26", text: "I try to get my teacher’s attention in class." },
+        { id: "E27", text: "Studying feels like a burden to me." },
+        { id: "E28", text: "When someone complains about me, I lose control easily." },
+        { id: "E29", text: "I like to stay alone most of the time." },
+        { id: "E30", text: "Teachers are ready to help me when I need support." }
       ]
     }
   },
@@ -265,7 +285,17 @@ const QUESTIONS = {
         { id: "E17", text: "I find it easy to make friends." },
         { id: "E18", text: "I am satisfied with the way lessons are taught in my school." },
         { id: "E19", text: "I show my anger when I am not chosen for school activities." },
-        { id: "E20", text: "I join groups of students freely." }
+        { id: "E20", text: "I join groups of students freely." },
+        { id: "E21", text: "I feel teachers do not pay attention to my problems." },
+        { id: "E22", text: "I often feel sad or upset in school." },
+        { id: "E23", text: "I like working together with my classmates." },
+        { id: "E24", text: "I am happy with my progress in studies." },
+        { id: "E25", text: "I feel neglected by teachers." },
+        { id: "E26", text: "I try to get my teacher’s attention in class." },
+        { id: "E27", text: "Studying feels like a burden to me." },
+        { id: "E28", text: "When someone complains about me, I lose control easily." },
+        { id: "E29", text: "I like to stay alone most of the time." },
+        { id: "E30", text: "Teachers are ready to help me when I need support." }
       ]
     }
   }
