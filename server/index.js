@@ -53,7 +53,21 @@ app.get('/api/submissions', async (req, res) => {
     }
 });
 
-// 4. Admin Timer Settings (Basic In-Memory Cache for now unless they want a DB Collection)
+// 4. Delete a Submission (Admin)
+app.delete('/api/submissions/:id', async (req, res) => {
+    try {
+        const result = await Submission.findOneAndDelete({ id: req.params.id });
+        if (!result) {
+            return res.status(404).json({ success: false, message: 'Submission not found' });
+        }
+        res.status(200).json({ success: true, message: 'Submission deleted' });
+    } catch (error) {
+        console.error("Delete Error:", error);
+        res.status(500).json({ success: false, message: 'Failed to delete submission', error: error.message });
+    }
+});
+
+// 5. Admin Timer Settings (Basic In-Memory Cache for now unless they want a DB Collection)
 let adminSettings = { globalTimeLimit: 30 }; // Fallback
 
 app.get('/api/settings', (req, res) => {

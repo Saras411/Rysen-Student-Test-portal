@@ -592,6 +592,20 @@ function AdminResults() {
 
   const filtered = data.filter(s => (filter.branch === "All" || s.branch === filter.branch) && (filter.band === "All" || String(s.band) === filter.band));
 
+  function deleteSubmission(id) {
+    if (!window.confirm("Are you sure you want to delete this specific candidate response? This action cannot be undone.")) return;
+    fetch(`${API_BASE}/api/submissions/${id}`, { method: 'DELETE' })
+      .then(res => res.json())
+      .then(json => {
+        if (json.success) setData(prev => prev.filter(s => s.id !== id));
+        else alert("Failed to delete response");
+      })
+      .catch(err => {
+        console.error("Delete error:", err);
+        alert("An error occurred while deleting.");
+      });
+  }
+
   function downloadXLSX() {
     const headers = ["Full Name", "Class / Grade", "Phone Number", "Band", "Branch", "Date of Test", "Time Taken", "Language Level", "Reasoning Level", "Number Sense Level", "Emotional Adjustment", "Social Adjustment", "Hobby Profile"];
     const rows = filtered.map(s => [`"${s.name || ''}"`, `"Grade ${s.grade || ''}"`, `"${s.phone || ''}"`, `"Band ${s.band}"`, `"${s.branch || ''}"`, `"${s.date || ''}"`, `"${s.timeTaken || ''}"`, `"${s.scores?.A?.level || '-'}"`, `"${s.scores?.B?.level || '-'}"`, `"${s.scores?.C?.level || '-'}"`, `"${s.likert?.emotionalLevel || '-'}"`, `"${s.likert?.socialLevel || '-'}"`, `"${s.hobbyProfile || '-'}"`]);
@@ -647,8 +661,9 @@ function AdminResults() {
                   <td style={{ padding: "8px 12px", color: "#8a9bb0", fontSize: 11 }}>{s.hobbyProfile?.split(" ")[0] || "-"}</td>
                   <td style={{ padding: "8px 6px", whiteSpace: "nowrap" }}>
                     <div style={{ display: "flex", gap: 6 }}>
-                      <button onClick={() => setSelectedReport(s)} style={{ background: "#1a3a6b", color: "#8ab0e0", border: "none", borderRadius: 6, padding: "5px 9px", cursor: "pointer", fontSize: 11, fontWeight: 600 }} title="View & Print Report">📄 Report</button>
-                      <button onClick={() => downloadResponseKey(s)} style={{ background: "rgba(200,169,110,0.15)", color: "#c8a96e", border: "1px solid rgba(200,169,110,0.3)", borderRadius: 6, padding: "5px 9px", cursor: "pointer", fontSize: 11, fontWeight: 600 }} title="Download student's full response key as CSV">🗝 Key</button>
+                      <button onClick={() => setSelectedReport(s)} style={{ background: "#1a3a6b", color: "#8ab0e0", border: "none", borderRadius: 6, padding: "5px 9px", cursor: "pointer", fontSize: 11, fontWeight: 600 }} title="View & Print Report">📄</button>
+                      <button onClick={() => downloadResponseKey(s)} style={{ background: "rgba(200,169,110,0.15)", color: "#c8a96e", border: "1px solid rgba(200,169,110,0.3)", borderRadius: 6, padding: "5px 9px", cursor: "pointer", fontSize: 11, fontWeight: 600 }} title="Download student's full response key as CSV">🗝</button>
+                      <button onClick={() => deleteSubmission(s.id)} style={{ background: "rgba(200,50,50,0.2)", color: "#e07070", border: "1px solid rgba(200,50,50,0.3)", borderRadius: 6, padding: "5px 9px", cursor: "pointer", fontSize: 11, fontWeight: 600 }} title="Delete Response">🗑</button>
                     </div>
                   </td>
                 </tr>
@@ -665,6 +680,30 @@ function AdminSettings({ settings, setSettings }) {
   const [localTimes, setLocalTimes] = useState(settings.timeLimits || { 3: 60, 4: 60, 5: 60 });
   const [activeBand, setActiveBand] = useState(3);
   const [saved, setSaved] = useState(false);
+  const [authOk, setAuthOk] = useState(false);
+  const [passInput, setPassInput] = useState("");
+
+  if (!authOk) {
+    return (
+      <div style={{ maxWidth: 400, margin: "40px auto", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(200,169,110,0.3)", borderRadius: 16, padding: 30, textAlign: "center" }}>
+        <h3 style={{ color: "#c8a96e", margin: "0 0 15px" }}>Authentication Required</h3>
+        <p style={{ color: "#8a9bb0", fontSize: 13, marginBottom: 20 }}>Enter the configuration password to view or change exam settings.</p>
+        <input
+          type="password"
+          placeholder="Enter password..."
+          value={passInput}
+          onChange={e => setPassInput(e.target.value)}
+          onKeyDown={e => { if (e.key === "Enter") { if (passInput === "Rysen2026") setAuthOk(true); else alert("Incorrect password"); } }}
+          style={{ width: "100%", padding: "10px", borderRadius: 8, border: "1px solid rgba(200,169,110,0.3)", background: "rgba(255,255,255,0.07)", color: "#e8e0d5", marginBottom: 15 }}
+        />
+        <button
+          onClick={() => { if (passInput === "Rysen2026") setAuthOk(true); else alert("Incorrect password"); }}
+          style={{ background: "#1a3a6b", color: "#fff", border: "none", borderRadius: 8, padding: "10px 24px", width: "100%", cursor: "pointer", fontWeight: 600 }}>
+          Access Settings
+        </button>
+      </div>
+    );
+  }
 
   function updateLocalTime(val) {
     setLocalTimes(prev => ({ ...prev, [activeBand]: val }));
