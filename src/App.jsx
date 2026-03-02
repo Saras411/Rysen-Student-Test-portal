@@ -371,7 +371,7 @@ function HomePage({ setView }) {
       <div style={{ textAlign: "center", marginBottom: 48 }}>
         <img src="/logo.png" alt="RYSEN Group Logo" style={{ width: 150, height: "auto", margin: "0 auto 20px", display: "block", filter: "drop-shadow(0 4px 16px rgba(139,105,20,0.3))" }} onError={(e) => { e.target.onerror = null; e.target.outerHTML = '<div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #c8a96e, #8b6914); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 32px; box-shadow: 0 4px 20px rgba(200,169,110,0.4)">🎓</div>'; }} />
         <h1 style={{ fontSize: "clamp(28px,5vw,48px)", fontWeight: 700, color: "#c8a96e", letterSpacing: 2, margin: 0, lineHeight: 1.2 }}>RYSEN Group of Schools</h1>
-        <p style={{ color: "#8a9bb0", fontSize: 16, marginTop: 8, letterSpacing: 1 }}>Entrance Diagnostic Assessment Portal</p>
+        <p style={{ color: "#8a9bb0", fontSize: 16, marginTop: 8, letterSpacing: 1 }}>Baseline Assessment for Skill & Engagement</p>
         <div style={{ width: 60, height: 2, background: "linear-gradient(90deg, transparent, #c8a96e, transparent)", margin: "16px auto 0" }} />
       </div>
       <div style={{ display: "flex", gap: 24, flexWrap: "wrap", justifyContent: "center", maxWidth: 700 }}>
@@ -1228,7 +1228,6 @@ function ReportPage({ submission, setView, isAdmin }) {
         <thead>
           <tr>
             <th style={thStyle}>Indicator</th>
-            <th style={{ ...thStyle, width: 160 }}>Reference Question</th>
             <th style={{ ...thStyle, width: 130, textAlign: "center" }}>Readiness Level</th>
           </tr>
         </thead>
@@ -1238,7 +1237,6 @@ function ReportPage({ submission, setView, isAdmin }) {
             return (
               <tr key={i} style={{ background: i % 2 === 0 ? "#fff" : "#f8fafc" }}>
                 <td style={tdStyle}>{ind}</td>
-                <td style={{ ...tdStyle, color: "#4a5a6a" }}>{ref}</td>
                 <td style={{ ...tdStyle, textAlign: "center" }}>
                   <span style={{ display: "inline-block", padding: "3px 14px", borderRadius: 5, fontWeight: 700, fontSize: 11, background: c.bg, color: c.color, border: `1px solid ${c.border}` }}>{lv}</span>
                 </td>
@@ -1291,7 +1289,7 @@ function ReportPage({ submission, setView, isAdmin }) {
           <img src="/logo.png" alt="RYSEN Group Logo" style={{ width: 64, height: "auto", flexShrink: 0, filter: "drop-shadow(0 2px 8px rgba(0,0,0,0.3))" }} onError={(e) => { e.target.onerror = null; e.target.outerHTML = '<div style="width: 52px; height: 52px; border-radius: 50%; background: rgba(200,169,110,0.3); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;">🎓</div>'; }} />
           <div>
             <h1 style={{ color: "#c8a96e", margin: 0, fontSize: 21, fontWeight: 700, letterSpacing: 1 }}>RYSEN Group of Schools</h1>
-            <p style={{ color: "rgba(200,220,255,0.75)", margin: "3px 0 0", fontSize: 13 }}>Entrance Diagnostic Report</p>
+            <p style={{ color: "rgba(200,225,255,0.75)", margin: "3px 0 0", fontSize: 13 }}>BASE Report</p>
           </div>
         </div>
 
@@ -1321,7 +1319,7 @@ function ReportPage({ submission, setView, isAdmin }) {
           <div style={{ marginBottom: 22 }}>
             <div style={{ fontWeight: 700, color: "#1a3a6b", fontSize: 13, marginBottom: 8, textTransform: "uppercase", letterSpacing: 1 }}>Purpose of the Entrance Assessment</div>
             <p style={{ color: "#3a4a5a", fontSize: 13, lineHeight: 1.75, margin: 0 }}>
-              The Readiness & Learning Profile is an entrance-stage diagnostic assessment conducted to understand the child's learning readiness and learning behaviours based on age-appropriate tasks. This assessment uses developmental descriptors, not marks or ranks, and supports informed admission conversations.
+              Baseline Assessment for Skill & Engagement is an entrance-stage diagnostic assessment conducted to understand the child's learning readiness and learning behaviours based on age-appropriate tasks. This assessment uses developmental descriptors, not marks or ranks, and supports informed admission conversations.
             </p>
           </div>
 
