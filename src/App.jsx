@@ -448,7 +448,6 @@ function HomePage({ setView }) {
   return (
     <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "40px 20px", background: "linear-gradient(135deg, #0f1923 0%, #1a2a3a 100%)" }}>
       <div style={{ textAlign: "center", marginBottom: 48 }}>
-        <img src="/logo.png" alt="RYSEN Group Logo" style={{ width: 150, height: "auto", margin: "0 auto 20px", display: "block", filter: "drop-shadow(0 4px 16px rgba(139,105,20,0.3))" }} onError={(e) => { e.target.onerror = null; e.target.outerHTML = '<div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #c8a96e, #8b6914); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 32px; box-shadow: 0 4px 20px rgba(200,169,110,0.4)">🎓</div>'; }} />
         <h1 style={{ fontSize: "clamp(28px,5vw,48px)", fontWeight: 700, color: "#c8a96e", letterSpacing: 2, margin: 0, lineHeight: 1.2 }}>RYSEN Group of Schools</h1>
         <p style={{ color: "#8a9bb0", fontSize: 16, marginTop: 8, letterSpacing: 1 }}>Baseline Assessment for Skill & Engagement</p>
         <div style={{ width: 60, height: 2, background: "linear-gradient(90deg, transparent, #c8a96e, transparent)", margin: "16px auto 0" }} />
@@ -504,7 +503,6 @@ function AdminPage({ auth, setAuth, setView, settings, setSettings }) {
     <div style={{ maxWidth: 1100, margin: "0 auto", padding: "32px 20px" }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 32, flexWrap: "wrap", gap: 16 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <img src="/logo.png" alt="Logo" style={{ width: 48, height: "auto" }} onError={(e) => e.target.style.display = 'none'} />
           <div>
             <h1 style={{ color: "#c8a96e", margin: 0, fontSize: 26 }}>Admin Panel</h1>
             <p style={{ color: "#4a5a6a", margin: "4px 0 0", fontSize: 13 }}>RYSEN Group of Schools – Assessment Management</p>
@@ -1456,7 +1454,6 @@ function ReportPage({ submission, setView, isAdmin }) {
 
         {/* Header */}
         <div style={{ background: "linear-gradient(135deg, #0f2a4a, #1a3a6b)", padding: "26px 36px", display: "flex", alignItems: "center", gap: 24 }}>
-          <img src="/logo.png" alt="RYSEN Group Logo" style={{ width: 64, height: "auto", flexShrink: 0, filter: "drop-shadow(0 2px 8px rgba(0,0,0,0.3))" }} onError={(e) => { e.target.onerror = null; e.target.outerHTML = '<div style="width: 52px; height: 52px; border-radius: 50%; background: rgba(200,169,110,0.3); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;">🎓</div>'; }} />
           <div>
             <h1 style={{ color: "#c8a96e", margin: 0, fontSize: 21, fontWeight: 700, letterSpacing: 1 }}>RYSEN Group of Schools</h1>
             <p style={{ color: "rgba(200,225,255,0.75)", margin: "3px 0 0", fontSize: 13 }}>BASE Report</p>
@@ -1575,7 +1572,7 @@ function ReportPage({ submission, setView, isAdmin }) {
           <div style={{ marginBottom: 22, background: "#f0f4ff", border: "1px solid #c0cde0", borderRadius: 8, padding: "14px 18px" }}>
             <div style={{ fontWeight: 700, color: "#1a3a6b", fontSize: 13, marginBottom: 6 }}>Student Interest & Learning Profile</div>
             <p style={{ color: "#3a4a5a", fontSize: 13, margin: 0 }}>
-              Based on the Interests & Hobbies section, the student's primary inclination is: <strong style={{ color: "#1a3a6b" }}>{s.hobbyProfile}</strong>.
+              Based on the Interests & Hobbies section, the student's primary inclination is: <strong style={{ color: "#1a3a6b" }}>{s.hobbyProfile || getHobbyProfile(s.answers || {}, s.band)}</strong>.
               This profile can be used to shape co-curricular engagement and personalise classroom motivation strategies.
             </p>
           </div>
