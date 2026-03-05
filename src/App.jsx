@@ -1382,16 +1382,16 @@ function ReportPage({ submission, setView, isAdmin }) {
 
   const band = s.band;
 
-  const levelColor = (l) => l === "Secure" ? { bg: "#e8f5ee", color: "#1a6b3c", border: "#a8d5b8" } :
-    l === "Developing" ? { bg: "#fef9e7", color: "#8b6914", border: "#f0d090" } :
+  const levelColor = (l) => l === "Secure" ? { bg: "#e8f5ee", color: "#225632", border: "#a8d5b8" } :
+    l === "Developing" ? { bg: "#fef9e7", color: "#7D783E", border: "#f0d090" } :
       { bg: "#fde8e8", color: "#8b1a1a", border: "#e0a0a0" };
 
-  const thStyle = { background: "#1a3a6b", color: "#c8a96e", padding: "8px 12px", fontSize: 12, fontWeight: 700, textAlign: "left", border: "1px solid #2a4a7b" };
+  const thStyle = { background: "#033D4C", color: "#FECB08", padding: "8px 12px", fontSize: 12, fontWeight: 700, textAlign: "left", border: "1px solid #033D4C" };
   const tdStyle = { padding: "8px 12px", fontSize: 12, borderBottom: "1px solid #e0e8f0", color: "#2a3a4a" };
 
   const SectionTable = ({ title, indicators }) => (
     <div style={{ marginBottom: 22 }}>
-      <div style={{ background: "#1a3a6b", color: "#fff", padding: "8px 14px", fontWeight: 700, fontSize: 13, borderRadius: "6px 6px 0 0" }}>{title}</div>
+      <div style={{ background: "#033D4C", color: "#fff", padding: "8px 14px", fontWeight: 700, fontSize: 13, borderRadius: "6px 6px 0 0" }}>{title}</div>
       <table style={{ width: "100%", borderCollapse: "collapse", border: "1px solid #c8d8e8" }}>
         <thead>
           <tr>
@@ -1453,10 +1453,11 @@ function ReportPage({ submission, setView, isAdmin }) {
       <div ref={reportRef} style={{ background: "#fff", color: "#1a1a2e", borderRadius: 12, overflow: "hidden", boxShadow: "0 8px 40px rgba(0,0,0,0.4)" }}>
 
         {/* Header */}
-        <div style={{ background: "linear-gradient(135deg, #0f2a4a, #1a3a6b)", padding: "26px 36px", display: "flex", alignItems: "center", gap: 24 }}>
+        <div style={{ background: "linear-gradient(135deg, #033D4C, #225632)", padding: "26px 36px", display: "flex", alignItems: "center", gap: 24 }}>
+          <img src="/rysen-new-logo.png" alt="RYSEN Group Logo" style={{ width: 64, height: "auto", flexShrink: 0, filter: "drop-shadow(0 2px 8px rgba(0,0,0,0.3))" }} onError={(e) => { e.target.onerror = null; e.target.outerHTML = '<div style="width: 52px; height: 52px; border-radius: 50%; background: #033D4C; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;">🎓</div>'; }} />
           <div>
-            <h1 style={{ color: "#c8a96e", margin: 0, fontSize: 21, fontWeight: 700, letterSpacing: 1 }}>RYSEN Group of Schools</h1>
-            <p style={{ color: "rgba(200,225,255,0.75)", margin: "3px 0 0", fontSize: 13 }}>BASE Report</p>
+            <h1 style={{ color: "#FECB08", margin: 0, fontSize: 21, fontWeight: 700, letterSpacing: 1 }}>RYSEN Group of Schools</h1>
+            <p style={{ color: "rgba(254,203,8,0.75)", margin: "3px 0 0", fontSize: 13 }}>BASE Report</p>
           </div>
         </div>
 
@@ -1464,7 +1465,7 @@ function ReportPage({ submission, setView, isAdmin }) {
 
           {/* ── Applicant Details ── */}
           <div style={{ background: "#f8f6f2", border: "1px solid #e8e0d0", borderRadius: 8, padding: "16px 20px", marginBottom: 24 }}>
-            <div style={{ fontWeight: 700, color: "#1a3a6b", fontSize: 13, marginBottom: 12, textTransform: "uppercase", letterSpacing: 1 }}>Applicant Details</div>
+            <div style={{ fontWeight: 700, color: "#033D4C", fontSize: 13, marginBottom: 12, textTransform: "uppercase", letterSpacing: 1 }}>Applicant Details</div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px 24px", fontSize: 13 }}>
               {[
                 ["Student Name", s.name],
@@ -1484,7 +1485,7 @@ function ReportPage({ submission, setView, isAdmin }) {
 
           {/* ── Purpose ── */}
           <div style={{ marginBottom: 22 }}>
-            <div style={{ fontWeight: 700, color: "#1a3a6b", fontSize: 13, marginBottom: 8, textTransform: "uppercase", letterSpacing: 1 }}>Purpose of the Entrance Assessment</div>
+            <div style={{ fontWeight: 700, color: "#033D4C", fontSize: 13, marginBottom: 8, textTransform: "uppercase", letterSpacing: 1 }}>Purpose of the Entrance Assessment</div>
             <p style={{ color: "#3a4a5a", fontSize: 13, lineHeight: 1.75, margin: 0 }}>
               Baseline Assessment for Skill & Engagement is an entrance-stage diagnostic assessment conducted to understand the child's learning readiness and learning behaviours based on age-appropriate tasks. This assessment uses developmental descriptors, not marks or ranks, and supports informed admission conversations.
             </p>
@@ -1526,7 +1527,7 @@ function ReportPage({ submission, setView, isAdmin }) {
 
           {/* ── Emotional & Social ── */}
           <div style={{ marginBottom: 22 }}>
-            <div style={{ background: "#1a3a6b", color: "#fff", padding: "8px 14px", fontWeight: 700, fontSize: 13, borderRadius: "6px 6px 0 0" }}>Learning Disposition – Emotional & Social Adjustment</div>
+            <div style={{ background: "#033D4C", color: "#fff", padding: "8px 14px", fontWeight: 700, fontSize: 13, borderRadius: "6px 6px 0 0" }}>Learning Disposition – Emotional & Social Adjustment</div>
             <div style={{ border: "1px solid #c8d8e8", borderTop: "none", borderRadius: "0 0 6px 6px", overflow: "hidden" }}>
               <table style={{ width: "100%", borderCollapse: "collapse" }}>
                 <thead>
@@ -1538,11 +1539,11 @@ function ReportPage({ submission, setView, isAdmin }) {
                 <tbody>
                   <tr>
                     <td style={tdStyle}>Emotional Adjustment at School</td>
-                    <td style={{ ...tdStyle, fontWeight: 700, color: "#1a3a6b" }}>{s.likert?.emotionalLevel || "—"}</td>
+                    <td style={{ ...tdStyle, fontWeight: 700, color: "#033D4C" }}>{s.likert?.emotionalLevel || "—"}</td>
                   </tr>
                   <tr style={{ background: "#f8fafc" }}>
                     <td style={tdStyle}>Social Adjustment with Peers & Teachers</td>
-                    <td style={{ ...tdStyle, fontWeight: 700, color: "#1a3a6b" }}>{s.likert?.socialLevel || "—"}</td>
+                    <td style={{ ...tdStyle, fontWeight: 700, color: "#033D4C" }}>{s.likert?.socialLevel || "—"}</td>
                   </tr>
                 </tbody>
               </table>
@@ -1551,7 +1552,7 @@ function ReportPage({ submission, setView, isAdmin }) {
 
           {/* ── Entrance Test Performance Analysis ── */}
           <div style={{ marginBottom: 22, background: "#f8f6f2", border: "1px solid #e0d8c8", borderRadius: 8, padding: "16px 20px" }}>
-            <div style={{ fontWeight: 700, color: "#1a3a6b", fontSize: 13, marginBottom: 10, textTransform: "uppercase", letterSpacing: 1 }}>Entrance Test Performance Analysis</div>
+            <div style={{ fontWeight: 700, color: "#033D4C", fontSize: 13, marginBottom: 10, textTransform: "uppercase", letterSpacing: 1 }}>Entrance Test Performance Analysis</div>
             <p style={{ color: "#3a4a5a", fontSize: 13, lineHeight: 1.75, margin: "0 0 10px" }}>
               Based on rubric-aligned observations across all entrance tasks, the student demonstrates current readiness to engage with <strong>Class {s.grade}</strong> learning expectations.
               {AL === "Secure" && BL === "Secure" && CL === "Secure"
@@ -1560,7 +1561,7 @@ function ReportPage({ submission, setView, isAdmin }) {
                   ? " The student shows difficulty with detailed concept application in some areas. However, basic understanding is present and most questions were attempted sincerely."
                   : " The student shows a mixed profile with strengths in some areas and scope for development in others. With proper guidance and structured support, the student has the potential to progress well."}
             </p>
-            <div style={{ fontWeight: 700, color: "#1a3a6b", fontSize: 13, marginBottom: 8 }}>Academic Readiness</div>
+            <div style={{ fontWeight: 700, color: "#033D4C", fontSize: 13, marginBottom: 8 }}>Academic Readiness</div>
             <p style={{ color: "#3a4a5a", fontSize: 13, lineHeight: 1.75, margin: 0 }}>
               {AL === "Secure" && BL === "Secure" && CL === "Secure"
                 ? "The student meets the required criteria for Class " + s.grade + " and demonstrates confidence across language, reasoning, and number sense domains."
@@ -1570,9 +1571,9 @@ function ReportPage({ submission, setView, isAdmin }) {
 
           {/* ── Interests Profile Summary ── */}
           <div style={{ marginBottom: 22, background: "#f0f4ff", border: "1px solid #c0cde0", borderRadius: 8, padding: "14px 18px" }}>
-            <div style={{ fontWeight: 700, color: "#1a3a6b", fontSize: 13, marginBottom: 6 }}>Student Interest & Learning Profile</div>
+            <div style={{ fontWeight: 700, color: "#033D4C", fontSize: 13, marginBottom: 6 }}>Student Interest & Learning Profile</div>
             <p style={{ color: "#3a4a5a", fontSize: 13, margin: 0 }}>
-              Based on the Interests & Hobbies section, the student's primary inclination is: <strong style={{ color: "#1a3a6b" }}>{s.hobbyProfile || getHobbyProfile(s.answers || {}, s.band)}</strong>.
+              Based on the Interests & Hobbies section, the student's primary inclination is: <strong style={{ color: "#033D4C" }}>{s.hobbyProfile || getHobbyProfile(s.answers || {}, s.band)}</strong>.
               This profile can be used to shape co-curricular engagement and personalise classroom motivation strategies.
             </p>
           </div>
@@ -1590,7 +1591,7 @@ function ReportPage({ submission, setView, isAdmin }) {
             {["Assessor / Teacher Name", "Signature"].map(l => (
               <div key={l}>
                 <div style={{ color: "#6a7a8a", fontSize: 12, marginBottom: 6 }}>{l}</div>
-                <div style={{ height: 38, borderBottom: "2px solid #c8a96e" }} />
+                <div style={{ height: 38, borderBottom: "2px solid #7D783E" }} />
               </div>
             ))}
           </div>
