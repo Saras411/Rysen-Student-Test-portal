@@ -1215,6 +1215,13 @@ function QuestionBlock({ q, index, answer, setAnswer }) {
           value={answer || ""}
           onChange={e => setAnswer(e.target.value)}
           rows={5}
+          spellCheck={false}
+          autoCorrect="off"
+          autoCapitalize="off"
+          autoComplete="off"
+          data-gramm="false"
+          data-gramm_editor="false"
+          data-enable-grammarly="false"
           style={{ width: "100%", padding: "10px 14px", borderRadius: 8, border: "1px solid rgba(200,169,110,0.25)", background: "rgba(255,255,255,0.05)", color: "#e8e0d5", fontSize: 13, resize: "vertical", boxSizing: "border-box", lineHeight: 1.6 }}
         />
       )}
