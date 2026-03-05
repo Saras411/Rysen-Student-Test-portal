@@ -1269,14 +1269,26 @@ function ReportPage({ submission, setView, isAdmin }) {
     win.document.write(`<!DOCTYPE html>
 <html>
 <head>
-  <title>RYSEN Diagnostic Report – ${s.name}</title>
+  <title>RYSEN BASE Report \u2013 ${s.name}</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: Georgia, serif; color: #1a1a2e; background: #fff; padding: 0; }
+    body { font-family: Georgia, serif; color: #1a1a2e; background: #fff; }
     table { border-collapse: collapse; width: 100%; }
-    th, td { border: 1px solid #c8d8e8; padding: 7px 10px; font-size: 12px; }
+    th, td { border: 1px solid #c8d8e8; padding: 7px 10px; font-size: 11px; }
+
+    @page {
+      size: A4 portrait;
+      margin: 12mm 14mm 14mm 14mm;
+    }
+
     @media print {
-      body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      html, body { width: 210mm; height: auto; }
+      body {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        color-adjust: exact;
+      }
+      tr { page-break-inside: avoid; break-inside: avoid; }
       .no-print { display: none !important; }
     }
   </style>
@@ -1284,7 +1296,7 @@ function ReportPage({ submission, setView, isAdmin }) {
 <body>${printContent}</body>
 </html>`);
     win.document.close();
-    setTimeout(() => { win.focus(); win.print(); win.close(); }, 400);
+    setTimeout(() => { win.focus(); win.print(); win.close(); }, 500);
   }
 
   // ── Per-indicator rubric levels based on scores ──
