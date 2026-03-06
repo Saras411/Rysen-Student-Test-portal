@@ -1376,6 +1376,28 @@ function ReportPage({ submission, setView, isAdmin }) {
   const lvl = (sec) => s.scores?.[sec]?.level || "Emerging";
   const AL = lvl("A"); const BL = lvl("B"); const CL = lvl("C");
 
+  // ── Likert adjustment levels: prefer stored string, fallback to recalculate ──
+  const computedLikert = (() => {
+    // If both level strings exist, use them directly
+    if (s.likert?.emotionalLevel && s.likert?.socialLevel) {
+      return { emotionalLevel: s.likert.emotionalLevel, socialLevel: s.likert.socialLevel };
+    }
+    // If raw scores exist, derive levels from them
+    if (s.likert?.emotional !== undefined && s.likert?.social !== undefined) {
+      return {
+        emotionalLevel: getAdjustmentLevel(s.likert.emotional, "emotional"),
+        socialLevel: getAdjustmentLevel(s.likert.social, "social")
+      };
+    }
+    // Last resort: recalculate fully from answers
+    const bandQ = QUESTIONS[s.band];
+    if (bandQ && s.answers) {
+      const r = calcLikert(s.answers, bandQ);
+      return { emotionalLevel: r.emotionalLevel, socialLevel: r.socialLevel };
+    }
+    return { emotionalLevel: "—", socialLevel: "—" };
+  })();
+
   // Band-specific indicator tables
   const indicatorsA = {
     3: [
@@ -1631,11 +1653,11 @@ function ReportPage({ submission, setView, isAdmin }) {
                 <tbody>
                   <tr>
                     <td style={tdStyle}>Emotional Adjustment at School</td>
-                    <td style={{ ...tdStyle, fontWeight: 700, color: "#033D4C" }}>{s.likert?.emotionalLevel || "—"}</td>
+                    <td style={{ ...tdStyle, fontWeight: 700, color: "#033D4C" }}>{computedLikert.emotionalLevel}</td>
                   </tr>
                   <tr style={{ background: "#f8fafc" }}>
                     <td style={tdStyle}>Social Adjustment with Peers & Teachers</td>
-                    <td style={{ ...tdStyle, fontWeight: 700, color: "#033D4C" }}>{s.likert?.socialLevel || "—"}</td>
+                    <td style={{ ...tdStyle, fontWeight: 700, color: "#033D4C" }}>{computedLikert.socialLevel}</td>
                   </tr>
                 </tbody>
               </table>
