@@ -954,6 +954,11 @@ function ExamPage({ setView, settings }) {
       alert("Please fill in all fields before starting.");
       return;
     }
+    const phoneDigits = info.phone.replace(/\D/g, "");
+    if (phoneDigits.length !== 10) {
+      alert("Please enter a valid 10-digit phone number.");
+      return;
+    }
     setStep("exam");
   }
 
@@ -997,7 +1002,7 @@ function ExamPage({ setView, settings }) {
 
     setSubmission(sub);
     setIsSubmitting(false);
-    setStep("report");
+    setStep("thankyou");
   }
 
   if (step === "info") return <ExamInfoStep info={info} setInfo={setInfo} onStart={startExam} setView={setView} settings={settings} />;
@@ -1013,6 +1018,24 @@ function ExamPage({ setView, settings }) {
       onSubmit={submitExam}
       isSubmitting={isSubmitting}
     />
+  );
+  if (step === "thankyou") return (
+    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "40px 20px", background: "linear-gradient(135deg, #021a1a 0%, #033D4C 100%)" }}>
+      <div style={{ textAlign: "center", maxWidth: 520, padding: "48px 36px", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(254,203,8,0.2)", borderRadius: 16 }}>
+        <div style={{ fontSize: 56, marginBottom: 20 }}>\u2705</div>
+        <h2 style={{ color: "#FECB08", fontSize: 28, fontWeight: 700, marginBottom: 12 }}>Assessment Submitted!</h2>
+        <p style={{ color: "#a0d4b0", fontSize: 15, lineHeight: 1.7, marginBottom: 8 }}>
+          Thank you for completing the Baseline Assessment for Skill & Engagement.
+        </p>
+        <p style={{ color: "#8ab0a0", fontSize: 13, lineHeight: 1.7, marginBottom: 28 }}>
+          Your responses have been recorded successfully. The report will be reviewed by your teacher.
+        </p>
+        <div style={{ width: 60, height: 2, background: "linear-gradient(90deg, transparent, #FECB08, transparent)", margin: "0 auto 28px" }} />
+        <button onClick={() => setView("home")} style={{ background: "linear-gradient(135deg, #225632, #1a4528)", color: "#fff", border: "none", borderRadius: 10, padding: "13px 36px", fontSize: 15, fontWeight: 700, cursor: "pointer", letterSpacing: 0.5 }}>
+          \u2190 Back to Home
+        </button>
+      </div>
+    </div>
   );
   if (step === "report") return <ReportPage submission={submission} setView={setView} />;
 }
@@ -1049,7 +1072,8 @@ function ExamInfoStep({ info, setInfo, onStart, setView, settings }) {
         <div style={{ marginBottom: 16 }}>
           <label style={{ display: "block", color: "#8ab0a0", fontSize: 13, marginBottom: 6 }}>Phone Number <span style={{ color: "#4a6a5a", fontSize: 11 }}>(parent/guardian, for reference)</span></label>
           <input type="tel" placeholder="10-digit mobile number" value={info.phone}
-            onChange={e => setInfo(i => ({ ...i, phone: e.target.value }))}
+            onChange={e => { const v = e.target.value.replace(/\D/g, "").slice(0, 10); setInfo(i => ({ ...i, phone: v })); }}
+            maxLength={10}
             style={{ width: "100%", padding: "10px 14px", borderRadius: 8, border: "1px solid rgba(254,203,8,0.25)", background: "rgba(255,255,255,0.06)", color: "#e0e8d5", fontSize: 14, boxSizing: "border-box" }} />
         </div>
 
