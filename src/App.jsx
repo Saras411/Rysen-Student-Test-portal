@@ -369,21 +369,21 @@ function getRubricLevel(correct, total) {
 
 function getAdjustmentLevel(score, type) {
   if (type === "emotional") {
-    if (score <= 4) return "Extremely High Adjustment";
-    if (score <= 9) return "High Adjustment";
-    if (score <= 13) return "Above Average Adjustment";
-    if (score <= 19) return "Average / Moderate Adjustment";
-    if (score <= 23) return "Below Average Adjustment";
-    if (score <= 28) return "Unsatisfactory Adjustment";
-    return "Extremely Unsatisfactory Adjustment";
+    if (score <= 4) return "Very Strong Confidence";
+    if (score <= 9) return "Strong Confidence";
+    if (score <= 13) return "Good Confidence";
+    if (score <= 19) return "Emerging Confidence";
+    if (score <= 23) return "Developing Skills";
+    if (score <= 28) return "Support Recommended";
+    return "Needs Immediate Support";
   } else {
-    if (score <= 3) return "Extremely High Adjustment";
-    if (score <= 8) return "High Adjustment";
-    if (score <= 13) return "Above Average Adjustment";
-    if (score <= 20) return "Average / Moderate Adjustment";
-    if (score <= 25) return "Below Average Adjustment";
-    if (score <= 30) return "Unsatisfactory Adjustment";
-    return "Extremely Unsatisfactory Adjustment";
+    if (score <= 3) return "Very Strong Confidence";
+    if (score <= 8) return "Strong Confidence";
+    if (score <= 13) return "Good Confidence";
+    if (score <= 20) return "Emerging Confidence";
+    if (score <= 25) return "Developing Skills";
+    if (score <= 30) return "Support Recommended";
+    return "Needs Immediate Support";
   }
 }
 
