@@ -445,7 +445,7 @@ export default function App() {
   }, [settings]);
 
   return (
-    <div style={{ minHeight: "100vh", background: "#0f1923", color: "#e8e0d5", fontFamily: "'Georgia', serif" }}>
+    <div style={{ minHeight: "100vh", background: "#021a1a", color: "#e0e8d5", fontFamily: "'Georgia', serif" }}>
       {view === "home" && <HomePage setView={setView} />}
       {view === "admin" && <AdminPage auth={adminAuth} setAuth={setAdminAuth} setView={setView} settings={settings} setSettings={setSettings} />}
       {view === "exam" && <ExamPage setView={setView} settings={settings} />}
@@ -456,17 +456,17 @@ export default function App() {
 // ─── HOME PAGE ───────────────────────────────────────────────────
 function HomePage({ setView }) {
   return (
-    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "40px 20px", background: "linear-gradient(135deg, #0f1923 0%, #1a2a3a 100%)" }}>
+    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "40px 20px", background: "linear-gradient(135deg, #021a1a 0%, #033D4C 100%)" }}>
       <div style={{ textAlign: "center", marginBottom: 48 }}>
-        <h1 style={{ fontSize: "clamp(28px,5vw,48px)", fontWeight: 700, color: "#c8a96e", letterSpacing: 2, margin: 0, lineHeight: 1.2 }}>RYSEN Group of Schools</h1>
-        <p style={{ color: "#8a9bb0", fontSize: 16, marginTop: 8, letterSpacing: 1 }}>Baseline Assessment for Skill & Engagement</p>
-        <div style={{ width: 60, height: 2, background: "linear-gradient(90deg, transparent, #c8a96e, transparent)", margin: "16px auto 0" }} />
+        <h1 style={{ fontSize: "clamp(28px,5vw,48px)", fontWeight: 700, color: "#FECB08", letterSpacing: 2, margin: 0, lineHeight: 1.2 }}>RYSEN Group of Schools</h1>
+        <p style={{ color: "#8ab0a0", fontSize: 16, marginTop: 8, letterSpacing: 1 }}>Baseline Assessment for Skill & Engagement</p>
+        <div style={{ width: 60, height: 2, background: "linear-gradient(90deg, transparent, #FECB08, transparent)", margin: "16px auto 0" }} />
       </div>
       <div style={{ display: "flex", gap: 24, flexWrap: "wrap", justifyContent: "center", maxWidth: 700 }}>
         <PortalCard icon="📝" title="Student Assessment" desc="Take your entrance diagnostic test. Select your band and begin." btnLabel="Start Exam" btnColor="#1a6b3c" onClick={() => setView("exam")} />
-        <PortalCard icon="⚙️" title="Admin Panel" desc="Manage branches, view results, and download assessment reports." btnLabel="Admin Login" btnColor="#1a3a6b" onClick={() => setView("admin")} />
+        <PortalCard icon="⚙️" title="Admin Panel" desc="Manage branches, view results, and download assessment reports." btnLabel="Admin Login" btnColor="#033D4C" onClick={() => setView("admin")} />
       </div>
-      <p style={{ marginTop: 48, color: "#4a5a6a", fontSize: 12, letterSpacing: 1 }}>Branches: Bikaner · Ganganagar · Deoli · Nimbahera · Pilibanga · Vijaynagar · Beawar · Jaisalmer · Udaipur</p>
+      <p style={{ marginTop: 48, color: "#4a6a5a", fontSize: 12, letterSpacing: 1 }}>Branches: Bikaner · Ganganagar · Deoli · Nimbahera · Pilibanga · Vijaynagar · Beawar · Jaisalmer · Udaipur</p>
     </div>
   );
 }
@@ -474,10 +474,10 @@ function HomePage({ setView }) {
 function PortalCard({ icon, title, desc, btnLabel, btnColor, onClick }) {
   const [hover, setHover] = useState(false);
   return (
-    <div onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} style={{ background: hover ? "rgba(255,255,255,0.07)" : "rgba(255,255,255,0.04)", border: "1px solid rgba(200,169,110,0.3)", borderRadius: 16, padding: "32px 28px", width: 280, transition: "all 0.3s", transform: hover ? "translateY(-4px)" : "none", boxShadow: hover ? "0 12px 40px rgba(0,0,0,0.4)" : "0 4px 20px rgba(0,0,0,0.2)" }}>
+    <div onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} style={{ background: hover ? "rgba(255,255,255,0.07)" : "rgba(255,255,255,0.04)", border: "1px solid rgba(254,203,8,0.3)", borderRadius: 16, padding: "32px 28px", width: 280, transition: "all 0.3s", transform: hover ? "translateY(-4px)" : "none", boxShadow: hover ? "0 12px 40px rgba(0,0,0,0.4)" : "0 4px 20px rgba(0,0,0,0.2)" }}>
       <div style={{ fontSize: 40, marginBottom: 12 }}>{icon}</div>
-      <h2 style={{ color: "#c8a96e", fontSize: 20, margin: "0 0 10px", fontWeight: 600 }}>{title}</h2>
-      <p style={{ color: "#8a9bb0", fontSize: 14, lineHeight: 1.6, margin: "0 0 20px" }}>{desc}</p>
+      <h2 style={{ color: "#FECB08", fontSize: 20, margin: "0 0 10px", fontWeight: 600 }}>{title}</h2>
+      <p style={{ color: "#8ab0a0", fontSize: 14, lineHeight: 1.6, margin: "0 0 20px" }}>{desc}</p>
       <button onClick={onClick} style={{ background: btnColor, color: "#fff", border: "none", borderRadius: 8, padding: "10px 24px", fontSize: 14, cursor: "pointer", fontWeight: 600, letterSpacing: 0.5, width: "100%" }}>{btnLabel}</button>
     </div>
   );
@@ -491,12 +491,12 @@ function AdminPage({ auth, setAuth, setView, settings, setSettings }) {
   if (!auth) {
     return (
       <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 20 }}>
-        <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(200,169,110,0.3)", borderRadius: 16, padding: 40, width: 340, textAlign: "center" }}>
+        <div style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(254,203,8,0.3)", borderRadius: 16, padding: 40, width: 340, textAlign: "center" }}>
           <div style={{ fontSize: 40, marginBottom: 12 }}>🔐</div>
-          <h2 style={{ color: "#c8a96e", margin: "0 0 20px" }}>Admin Login</h2>
-          <input type="password" placeholder="Enter admin password" value={pass} onChange={e => setPass(e.target.value)} onKeyDown={e => e.key === "Enter" && (pass === ADMIN_PASS ? setAuth(true) : alert("Incorrect password"))} style={{ width: "100%", padding: "10px 14px", borderRadius: 8, border: "1px solid rgba(200,169,110,0.3)", background: "rgba(255,255,255,0.07)", color: "#e8e0d5", fontSize: 14, boxSizing: "border-box", marginBottom: 12 }} />
-          <button onClick={() => pass === ADMIN_PASS ? setAuth(true) : alert("Incorrect password")} style={{ background: "#1a3a6b", color: "#fff", border: "none", borderRadius: 8, padding: "10px 24px", width: "100%", cursor: "pointer", fontSize: 14, fontWeight: 600 }}>Login</button>
-          <button onClick={() => setView("home")} style={{ marginTop: 12, background: "transparent", color: "#4a5a6a", border: "none", cursor: "pointer", fontSize: 13 }}>← Back to Home</button>
+          <h2 style={{ color: "#FECB08", margin: "0 0 20px" }}>Admin Login</h2>
+          <input type="password" placeholder="Enter admin password" value={pass} onChange={e => setPass(e.target.value)} onKeyDown={e => e.key === "Enter" && (pass === ADMIN_PASS ? setAuth(true) : alert("Incorrect password"))} style={{ width: "100%", padding: "10px 14px", borderRadius: 8, border: "1px solid rgba(254,203,8,0.3)", background: "rgba(255,255,255,0.07)", color: "#e0e8d5", fontSize: 14, boxSizing: "border-box", marginBottom: 12 }} />
+          <button onClick={() => pass === ADMIN_PASS ? setAuth(true) : alert("Incorrect password")} style={{ background: "#033D4C", color: "#fff", border: "none", borderRadius: 8, padding: "10px 24px", width: "100%", cursor: "pointer", fontSize: 14, fontWeight: 600 }}>Login</button>
+          <button onClick={() => setView("home")} style={{ marginTop: 12, background: "transparent", color: "#4a6a5a", border: "none", cursor: "pointer", fontSize: 13 }}>← Back to Home</button>
         </div>
       </div>
     );
@@ -514,18 +514,18 @@ function AdminPage({ auth, setAuth, setView, settings, setSettings }) {
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 32, flexWrap: "wrap", gap: 16 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
           <div>
-            <h1 style={{ color: "#c8a96e", margin: 0, fontSize: 26 }}>Admin Panel</h1>
-            <p style={{ color: "#4a5a6a", margin: "4px 0 0", fontSize: 13 }}>RYSEN Group of Schools – Assessment Management</p>
+            <h1 style={{ color: "#FECB08", margin: 0, fontSize: 26 }}>Admin Panel</h1>
+            <p style={{ color: "#4a6a5a", margin: "4px 0 0", fontSize: 13 }}>RYSEN Group of Schools – Assessment Management</p>
           </div>
         </div>
         <div style={{ display: "flex", gap: 10 }}>
-          <button onClick={() => setView("home")} style={{ background: "rgba(255,255,255,0.07)", color: "#8a9bb0", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "8px 16px", cursor: "pointer", fontSize: 13 }}>← Home</button>
+          <button onClick={() => setView("home")} style={{ background: "rgba(255,255,255,0.07)", color: "#8ab0a0", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "8px 16px", cursor: "pointer", fontSize: 13 }}>← Home</button>
           <button onClick={() => setAuth(false)} style={{ background: "rgba(200,50,50,0.2)", color: "#e07070", border: "1px solid rgba(200,50,50,0.3)", borderRadius: 8, padding: "8px 16px", cursor: "pointer", fontSize: 13 }}>Logout</button>
         </div>
       </div>
       <div style={{ display: "flex", gap: 8, marginBottom: 24, flexWrap: "wrap" }}>
         {tabs.map(t => (
-          <button key={t.id} onClick={() => setTab(t.id)} style={{ padding: "9px 20px", borderRadius: 8, border: "1px solid", borderColor: tab === t.id ? "#c8a96e" : "rgba(255,255,255,0.1)", background: tab === t.id ? "rgba(200,169,110,0.15)" : "transparent", color: tab === t.id ? "#c8a96e" : "#8a9bb0", cursor: "pointer", fontSize: 13, fontWeight: tab === t.id ? 600 : 400 }}>{t.label}</button>
+          <button key={t.id} onClick={() => setTab(t.id)} style={{ padding: "9px 20px", borderRadius: 8, border: "1px solid", borderColor: tab === t.id ? "#FECB08" : "rgba(255,255,255,0.1)", background: tab === t.id ? "rgba(254,203,8,0.15)" : "transparent", color: tab === t.id ? "#FECB08" : "#8ab0a0", cursor: "pointer", fontSize: 13, fontWeight: tab === t.id ? 600 : 400 }}>{t.label}</button>
         ))}
       </div>
       {tab === "results" && <AdminResults />}
@@ -537,10 +537,10 @@ function AdminPage({ auth, setAuth, setView, settings, setSettings }) {
 }
 
 function LevelBadge({ label }) {
-  if (!label) return <span style={{ color: "#4a5a6a" }}>—</span>;
-  const colors = { Secure: "#1a6b3c", Developing: "#6b5a1a", Emerging: "#6b1a1a", "Band 3": "#3a2a6b", "Band 4": "#1a3a6b", "Band 5": "#1a5a6b" };
+  if (!label) return <span style={{ color: "#4a6a5a" }}>—</span>;
+  const colors = { Secure: "#1a6b3c", Developing: "#6b5a1a", Emerging: "#6b1a1a", "Band 3": "#3a2a6b", "Band 4": "#033D4C", "Band 5": "#1a5a6b" };
   const bg = colors[label] || "rgba(255,255,255,0.08)";
-  return <span style={{ background: bg, color: "#e8e0d5", borderRadius: 5, padding: "2px 8px", fontSize: 11, fontWeight: 600 }}>{label}</span>;
+  return <span style={{ background: bg, color: "#e0e8d5", borderRadius: 5, padding: "2px 8px", fontSize: 11, fontWeight: 600 }}>{label}</span>;
 }
 
 // ─── UTILS: DOWNLOAD RESPONSE KEY ─────────────────────────────────
@@ -675,48 +675,48 @@ function AdminResults() {
   }
 
   if (selectedReport) {
-    return (<div><button onClick={() => setSelectedReport(null)} style={{ background: "rgba(255,255,255,0.07)", color: "#8a9bb0", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "8px 16px", cursor: "pointer", fontSize: 13, marginBottom: 20 }}>&#8592; Back to Results</button><ReportPage submission={selectedReport} setView={null} isAdmin={true} /></div>);
+    return (<div><button onClick={() => setSelectedReport(null)} style={{ background: "rgba(255,255,255,0.07)", color: "#8ab0a0", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "8px 16px", cursor: "pointer", fontSize: 13, marginBottom: 20 }}>&#8592; Back to Results</button><ReportPage submission={selectedReport} setView={null} isAdmin={true} /></div>);
   }
 
   return (
     <div>
       <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 20, alignItems: "center" }}>
-        <select value={filter.branch} onChange={e => setFilter(f => ({ ...f, branch: e.target.value }))} style={{ padding: "8px 12px", borderRadius: 8, border: "1px solid rgba(200,169,110,0.3)", background: "#1a2a3a", color: "#e8e0d5", fontSize: 13 }}>
+        <select value={filter.branch} onChange={e => setFilter(f => ({ ...f, branch: e.target.value }))} style={{ padding: "8px 12px", borderRadius: 8, border: "1px solid rgba(254,203,8,0.3)", background: "#0f2a2a", color: "#e0e8d5", fontSize: 13 }}>
           <option value="All">All Branches</option>
           {BRANCHES.map(b => <option key={b}>{b}</option>)}
         </select>
-        <select value={filter.band} onChange={e => setFilter(f => ({ ...f, band: e.target.value }))} style={{ padding: "8px 12px", borderRadius: 8, border: "1px solid rgba(200,169,110,0.3)", background: "#1a2a3a", color: "#e8e0d5", fontSize: 13 }}>
+        <select value={filter.band} onChange={e => setFilter(f => ({ ...f, band: e.target.value }))} style={{ padding: "8px 12px", borderRadius: 8, border: "1px solid rgba(254,203,8,0.3)", background: "#0f2a2a", color: "#e0e8d5", fontSize: 13 }}>
           <option value="All">All Bands</option>
           <option value="3">Band 3 (Gr III&#8211;V)</option>
           <option value="4">Band 4 (Gr VI&#8211;VIII)</option>
           <option value="5">Band 5 (Gr IX&#8211;X)</option>
         </select>
         <button onClick={downloadXLSX} style={{ background: "#1a6b3c", color: "#fff", border: "none", borderRadius: 8, padding: "8px 16px", cursor: "pointer", fontSize: 13, fontWeight: 600 }}>&#128229; Download Excel</button>
-        <span style={{ color: "#4a5a6a", fontSize: 13 }}>{filtered.length} submission(s)</span>
+        <span style={{ color: "#4a6a5a", fontSize: 13 }}>{filtered.length} submission(s)</span>
         {someSelected && (
           <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "7px 16px", background: "rgba(200,50,50,0.12)", border: "1px solid rgba(200,50,50,0.3)", borderRadius: 8 }}>
             <span style={{ color: "#e07070", fontSize: 13, fontWeight: 600 }}>{selected.size} selected</span>
             <button onClick={deleteSelected} disabled={bulkDeleting} style={{ background: "rgba(200,50,50,0.25)", color: "#e07070", border: "1px solid rgba(200,50,50,0.4)", borderRadius: 6, padding: "5px 14px", cursor: "pointer", fontSize: 12, fontWeight: 700 }}>
               {bulkDeleting ? "Deleting..." : "&#128465; Delete Selected"}
             </button>
-            <button onClick={() => setSelected(new Set())} style={{ background: "transparent", color: "#8a9bb0", border: "none", cursor: "pointer", fontSize: 12 }}>&#10005; Clear</button>
+            <button onClick={() => setSelected(new Set())} style={{ background: "transparent", color: "#8ab0a0", border: "none", cursor: "pointer", fontSize: 12 }}>&#10005; Clear</button>
           </div>
         )}
       </div>
       {loading ? (
-        <div style={{ textAlign: "center", padding: 60, color: "#4a5a6a" }}><p>Loading remote submissions...</p></div>
+        <div style={{ textAlign: "center", padding: 60, color: "#4a6a5a" }}><p>Loading remote submissions...</p></div>
       ) : filtered.length === 0 ? (
-        <div style={{ textAlign: "center", padding: 60, color: "#4a5a6a" }}><div style={{ fontSize: 48, marginBottom: 12 }}>&#128237;</div><p>No submissions yet.</p></div>
+        <div style={{ textAlign: "center", padding: 60, color: "#4a6a5a" }}><div style={{ fontSize: 48, marginBottom: 12 }}>&#128237;</div><p>No submissions yet.</p></div>
       ) : (
         <div style={{ overflowX: "auto" }}>
           <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
             <thead>
-              <tr style={{ borderBottom: "1px solid rgba(200,169,110,0.3)" }}>
+              <tr style={{ borderBottom: "1px solid rgba(254,203,8,0.3)" }}>
                 <th style={{ padding: "8px 10px", width: 36 }}>
-                  <input type="checkbox" checked={allSelected} onChange={toggleAll} title="Select all visible" style={{ accentColor: "#c8a96e", width: 15, height: 15, cursor: "pointer" }} />
+                  <input type="checkbox" checked={allSelected} onChange={toggleAll} title="Select all visible" style={{ accentColor: "#FECB08", width: 15, height: 15, cursor: "pointer" }} />
                 </th>
                 {["Full Name", "Class", "Phone", "Band", "Branch", "Date", "Language", "Reasoning", "Num. Sense", "Adj.", "Hobby", "Actions"].map(h => (
-                  <th key={h} style={{ padding: "8px 12px", textAlign: "left", color: "#c8a96e", fontWeight: 600, whiteSpace: "nowrap" }}>{h}</th>
+                  <th key={h} style={{ padding: "8px 12px", textAlign: "left", color: "#FECB08", fontWeight: 600, whiteSpace: "nowrap" }}>{h}</th>
                 ))}
               </tr>
             </thead>
@@ -728,21 +728,21 @@ function AdminResults() {
                     <td style={{ padding: "8px 10px", textAlign: "center" }}>
                       <input type="checkbox" checked={isChecked} onChange={() => toggleOne(s.id)} style={{ accentColor: "#e07070", width: 15, height: 15, cursor: "pointer" }} />
                     </td>
-                    <td style={{ padding: "8px 12px", color: "#e8e0d5", fontWeight: 600 }}>{s.name}</td>
-                    <td style={{ padding: "8px 12px", color: "#8a9bb0" }}>Gr. {s.grade}</td>
-                    <td style={{ padding: "8px 12px", color: "#8a9bb0" }}>{s.phone || "&#8212;"}</td>
+                    <td style={{ padding: "8px 12px", color: "#e0e8d5", fontWeight: 600 }}>{s.name}</td>
+                    <td style={{ padding: "8px 12px", color: "#8ab0a0" }}>Gr. {s.grade}</td>
+                    <td style={{ padding: "8px 12px", color: "#8ab0a0" }}>{s.phone || "&#8212;"}</td>
                     <td style={{ padding: "8px 12px" }}><LevelBadge label={`Band ${s.band}`} /></td>
-                    <td style={{ padding: "8px 12px", color: "#8a9bb0" }}>{s.branch}</td>
-                    <td style={{ padding: "8px 12px", color: "#8a9bb0" }}>{s.date}</td>
+                    <td style={{ padding: "8px 12px", color: "#8ab0a0" }}>{s.branch}</td>
+                    <td style={{ padding: "8px 12px", color: "#8ab0a0" }}>{s.date}</td>
                     <td style={{ padding: "8px 12px" }}><LevelBadge label={s.scores?.A?.level} /></td>
                     <td style={{ padding: "8px 12px" }}><LevelBadge label={s.scores?.B?.level} /></td>
                     <td style={{ padding: "8px 12px" }}><LevelBadge label={s.scores?.C?.level} /></td>
-                    <td style={{ padding: "8px 12px", color: "#8a9bb0", fontSize: 11 }}>{s.likert?.emotionalLevel?.split(" ")[0] || "-"}</td>
-                    <td style={{ padding: "8px 12px", color: "#8a9bb0", fontSize: 11 }}>{s.hobbyProfile?.split(" ")[0] || "-"}</td>
+                    <td style={{ padding: "8px 12px", color: "#8ab0a0", fontSize: 11 }}>{s.likert?.emotionalLevel?.split(" ")[0] || "-"}</td>
+                    <td style={{ padding: "8px 12px", color: "#8ab0a0", fontSize: 11 }}>{s.hobbyProfile?.split(" ")[0] || "-"}</td>
                     <td style={{ padding: "8px 6px", whiteSpace: "nowrap" }}>
                       <div style={{ display: "flex", gap: 6 }}>
-                        <button onClick={() => setSelectedReport(s)} style={{ background: "#1a3a6b", color: "#8ab0e0", border: "none", borderRadius: 6, padding: "5px 9px", cursor: "pointer", fontSize: 11, fontWeight: 600 }} title="View Report">&#128196;</button>
-                        <button onClick={() => downloadResponseKey(s)} style={{ background: "rgba(200,169,110,0.15)", color: "#c8a96e", border: "1px solid rgba(200,169,110,0.3)", borderRadius: 6, padding: "5px 9px", cursor: "pointer", fontSize: 11, fontWeight: 600 }} title="Response Key">&#128221;</button>
+                        <button onClick={() => setSelectedReport(s)} style={{ background: "#033D4C", color: "#a0d4b0", border: "none", borderRadius: 6, padding: "5px 9px", cursor: "pointer", fontSize: 11, fontWeight: 600 }} title="View Report">&#128196;</button>
+                        <button onClick={() => downloadResponseKey(s)} style={{ background: "rgba(254,203,8,0.15)", color: "#FECB08", border: "1px solid rgba(254,203,8,0.3)", borderRadius: 6, padding: "5px 9px", cursor: "pointer", fontSize: 11, fontWeight: 600 }} title="Response Key">&#128221;</button>
                         <button onClick={() => deleteSubmission(s.id)} style={{ background: "rgba(200,50,50,0.2)", color: "#e07070", border: "1px solid rgba(200,50,50,0.3)", borderRadius: 6, padding: "5px 9px", cursor: "pointer", fontSize: 11, fontWeight: 600 }} title="Delete">&#128465;</button>
                       </div>
                     </td>
@@ -766,20 +766,20 @@ function AdminSettings({ settings, setSettings }) {
 
   if (!authOk) {
     return (
-      <div style={{ maxWidth: 400, margin: "40px auto", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(200,169,110,0.3)", borderRadius: 16, padding: 30, textAlign: "center" }}>
-        <h3 style={{ color: "#c8a96e", margin: "0 0 15px" }}>Authentication Required</h3>
-        <p style={{ color: "#8a9bb0", fontSize: 13, marginBottom: 20 }}>Enter the configuration password to view or change exam settings.</p>
+      <div style={{ maxWidth: 400, margin: "40px auto", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(254,203,8,0.3)", borderRadius: 16, padding: 30, textAlign: "center" }}>
+        <h3 style={{ color: "#FECB08", margin: "0 0 15px" }}>Authentication Required</h3>
+        <p style={{ color: "#8ab0a0", fontSize: 13, marginBottom: 20 }}>Enter the configuration password to view or change exam settings.</p>
         <input
           type="password"
           placeholder="Enter password..."
           value={passInput}
           onChange={e => setPassInput(e.target.value)}
           onKeyDown={e => { if (e.key === "Enter") { if (passInput === "Rysen2026") setAuthOk(true); else alert("Incorrect password"); } }}
-          style={{ width: "100%", padding: "10px", borderRadius: 8, border: "1px solid rgba(200,169,110,0.3)", background: "rgba(255,255,255,0.07)", color: "#e8e0d5", marginBottom: 15 }}
+          style={{ width: "100%", padding: "10px", borderRadius: 8, border: "1px solid rgba(254,203,8,0.3)", background: "rgba(255,255,255,0.07)", color: "#e0e8d5", marginBottom: 15 }}
         />
         <button
           onClick={() => { if (passInput === "Rysen2026") setAuthOk(true); else alert("Incorrect password"); }}
-          style={{ background: "#1a3a6b", color: "#fff", border: "none", borderRadius: 8, padding: "10px 24px", width: "100%", cursor: "pointer", fontWeight: 600 }}>
+          style={{ background: "#033D4C", color: "#fff", border: "none", borderRadius: 8, padding: "10px 24px", width: "100%", cursor: "pointer", fontWeight: 600 }}>
           Access Settings
         </button>
       </div>
@@ -801,45 +801,45 @@ function AdminSettings({ settings, setSettings }) {
 
   return (
     <div style={{ maxWidth: 640 }}>
-      <h3 style={{ color: "#c8a96e", margin: "0 0 20px" }}>⚙️ Exam Timer Settings</h3>
-      <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(200,169,110,0.25)", borderRadius: 12, padding: 28 }}>
-        <p style={{ color: "#8a9bb0", fontSize: 14, margin: "0 0 20px", lineHeight: 1.6 }}>Configure time limits individually for each band. Sets to <strong style={{ color: "#c8a96e" }}>0</strong> for no limit.</p>
+      <h3 style={{ color: "#FECB08", margin: "0 0 20px" }}>⚙️ Exam Timer Settings</h3>
+      <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(254,203,8,0.25)", borderRadius: 12, padding: 28 }}>
+        <p style={{ color: "#8ab0a0", fontSize: 14, margin: "0 0 20px", lineHeight: 1.6 }}>Configure time limits individually for each band. Sets to <strong style={{ color: "#FECB08" }}>0</strong> for no limit.</p>
 
         <div style={{ display: "flex", gap: 10, marginBottom: 20 }}>
           {[3, 4, 5].map(b => (
-            <button key={b} onClick={() => setActiveBand(b)} style={{ padding: "8px 18px", borderRadius: 8, border: "1px solid", borderColor: activeBand === b ? "#c8a96e" : "rgba(255,255,255,0.1)", background: activeBand === b ? "rgba(200,169,110,0.15)" : "transparent", color: activeBand === b ? "#c8a96e" : "#8a9bb0", cursor: "pointer", fontSize: 13, fontWeight: activeBand === b ? 600 : 400 }}>Band {b} Timer</button>
+            <button key={b} onClick={() => setActiveBand(b)} style={{ padding: "8px 18px", borderRadius: 8, border: "1px solid", borderColor: activeBand === b ? "#FECB08" : "rgba(255,255,255,0.1)", background: activeBand === b ? "rgba(254,203,8,0.15)" : "transparent", color: activeBand === b ? "#FECB08" : "#8ab0a0", cursor: "pointer", fontSize: 13, fontWeight: activeBand === b ? 600 : 400 }}>Band {b} Timer</button>
           ))}
         </div>
 
         <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 8, padding: 20, marginBottom: 24 }}>
           <div style={{ marginBottom: 20 }}>
-            <label style={{ display: "block", color: "#8a9bb0", fontSize: 13, marginBottom: 10 }}>Quick Presets for Band {activeBand}</label>
+            <label style={{ display: "block", color: "#8ab0a0", fontSize: 13, marginBottom: 10 }}>Quick Presets for Band {activeBand}</label>
             <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-              {presets.map(p => (<button key={p.value} onClick={() => updateLocalTime(p.value)} style={{ padding: "7px 14px", borderRadius: 7, border: "1px solid", borderColor: currentVal === p.value ? "#c8a96e" : "rgba(255,255,255,0.12)", background: currentVal === p.value ? "rgba(200,169,110,0.18)" : "rgba(255,255,255,0.04)", color: currentVal === p.value ? "#c8a96e" : "#8a9bb0", cursor: "pointer", fontSize: 13, fontWeight: currentVal === p.value ? 700 : 400 }}>{p.label}</button>))}
+              {presets.map(p => (<button key={p.value} onClick={() => updateLocalTime(p.value)} style={{ padding: "7px 14px", borderRadius: 7, border: "1px solid", borderColor: currentVal === p.value ? "#FECB08" : "rgba(255,255,255,0.12)", background: currentVal === p.value ? "rgba(254,203,8,0.18)" : "rgba(255,255,255,0.04)", color: currentVal === p.value ? "#FECB08" : "#8ab0a0", cursor: "pointer", fontSize: 13, fontWeight: currentVal === p.value ? 700 : 400 }}>{p.label}</button>))}
             </div>
           </div>
           <div>
-            <label style={{ display: "block", color: "#8a9bb0", fontSize: 13, marginBottom: 8 }}>Custom Duration (minutes)</label>
+            <label style={{ display: "block", color: "#8ab0a0", fontSize: 13, marginBottom: 8 }}>Custom Duration (minutes)</label>
             <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-              <input type="number" min="0" max="300" value={currentVal} onChange={e => updateLocalTime(parseInt(e.target.value) || 0)} style={{ width: 100, padding: "10px 14px", borderRadius: 8, border: "1px solid rgba(200,169,110,0.3)", background: "rgba(255,255,255,0.07)", color: "#e8e0d5", fontSize: 16, textAlign: "center" }} />
-              <span style={{ color: "#4a5a6a", fontSize: 13 }}>minutes {currentVal === 0 ? "(No Limit)" : `= ${Math.floor(currentVal / 60) > 0 ? Math.floor(currentVal / 60) + "h " : ""}${currentVal % 60}m`}</span>
+              <input type="number" min="0" max="300" value={currentVal} onChange={e => updateLocalTime(parseInt(e.target.value) || 0)} style={{ width: 100, padding: "10px 14px", borderRadius: 8, border: "1px solid rgba(254,203,8,0.3)", background: "rgba(255,255,255,0.07)", color: "#e0e8d5", fontSize: 16, textAlign: "center" }} />
+              <span style={{ color: "#4a6a5a", fontSize: 13 }}>minutes {currentVal === 0 ? "(No Limit)" : `= ${Math.floor(currentVal / 60) > 0 ? Math.floor(currentVal / 60) + "h " : ""}${currentVal % 60}m`}</span>
             </div>
           </div>
         </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-          <button onClick={save} style={{ background: "linear-gradient(135deg, #1a6b3c, #0f4d2a)", color: "#fff", border: "none", borderRadius: 8, padding: "11px 28px", cursor: "pointer", fontSize: 14, fontWeight: 700 }}>Save All Timers</button>
+          <button onClick={save} style={{ background: "linear-gradient(135deg, #225632, #1a4528)", color: "#fff", border: "none", borderRadius: 8, padding: "11px 28px", cursor: "pointer", fontSize: 14, fontWeight: 700 }}>Save All Timers</button>
           {saved && <span style={{ color: "#6be0a0", fontSize: 13 }}>✓ Saved successfully!</span>}
         </div>
       </div>
 
       <div style={{ marginTop: 20, background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 10, padding: "16px 20px" }}>
-        <h4 style={{ color: "#c8a96e", margin: "0 0 12px", fontSize: 13 }}>Current Active Settings</h4>
+        <h4 style={{ color: "#FECB08", margin: "0 0 12px", fontSize: 13 }}>Current Active Settings</h4>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 20 }}>
           {[3, 4, 5].map(b => (
             <div key={b}>
-              <span style={{ color: "#4a5a6a", fontSize: 12 }}>Band {b}</span>
-              <div style={{ color: "#e8e0d5", fontWeight: 700, fontSize: 15 }}>
+              <span style={{ color: "#4a6a5a", fontSize: 12 }}>Band {b}</span>
+              <div style={{ color: "#e0e8d5", fontWeight: 700, fontSize: 15 }}>
                 {(settings.timeLimits && settings.timeLimits[b]) === 0 ? "No Limit" : `${settings.timeLimits?.[b] || 60} mins`}
               </div>
             </div>
@@ -858,32 +858,32 @@ function AdminQuestions() {
   return (
     <div>
       <div style={{ display: "flex", gap: 10, marginBottom: 16 }}>
-        {[3, 4, 5].map(b => (<button key={b} onClick={() => { setActiveBand(b); setActiveSection("A"); }} style={{ padding: "8px 18px", borderRadius: 8, border: "1px solid", borderColor: activeBand === b ? "#c8a96e" : "rgba(255,255,255,0.1)", background: activeBand === b ? "rgba(200,169,110,0.15)" : "transparent", color: activeBand === b ? "#c8a96e" : "#8a9bb0", cursor: "pointer", fontSize: 13 }}>Band {b} – {BANDS[b].grades}</button>))}
+        {[3, 4, 5].map(b => (<button key={b} onClick={() => { setActiveBand(b); setActiveSection("A"); }} style={{ padding: "8px 18px", borderRadius: 8, border: "1px solid", borderColor: activeBand === b ? "#FECB08" : "rgba(255,255,255,0.1)", background: activeBand === b ? "rgba(254,203,8,0.15)" : "transparent", color: activeBand === b ? "#FECB08" : "#8ab0a0", cursor: "pointer", fontSize: 13 }}>Band {b} – {BANDS[b].grades}</button>))}
       </div>
       <div style={{ display: "flex", gap: 8, marginBottom: 20 }}>
-        {sections.map(s => (<button key={s} onClick={() => setActiveSection(s)} style={{ padding: "6px 14px", borderRadius: 6, border: "1px solid", borderColor: activeSection === s ? "#c8a96e" : "rgba(255,255,255,0.1)", background: activeSection === s ? "rgba(200,169,110,0.12)" : "transparent", color: activeSection === s ? "#c8a96e" : "#8a9bb0", cursor: "pointer", fontSize: 12 }}>Section {s}</button>))}
+        {sections.map(s => (<button key={s} onClick={() => setActiveSection(s)} style={{ padding: "6px 14px", borderRadius: 6, border: "1px solid", borderColor: activeSection === s ? "#FECB08" : "rgba(255,255,255,0.1)", background: activeSection === s ? "rgba(254,203,8,0.12)" : "transparent", color: activeSection === s ? "#FECB08" : "#8ab0a0", cursor: "pointer", fontSize: 12 }}>Section {s}</button>))}
       </div>
       {section && (
         <div>
-          <h3 style={{ color: "#c8a96e", marginBottom: 16 }}>Section {activeSection}: {section.title}</h3>
+          <h3 style={{ color: "#FECB08", marginBottom: 16 }}>Section {activeSection}: {section.title}</h3>
 
           {section.passage && (
-            <div style={{ color: "#8a9bb0", fontSize: 13, lineHeight: 1.6, marginBottom: 20, padding: "12px 16px", background: "rgba(200,169,110,0.05)", borderLeft: "3px solid #c8a96e", borderRadius: 4, whiteSpace: "pre-wrap" }}>
-              <strong style={{ color: "#c8a96e" }}>Passage:</strong><br />
+            <div style={{ color: "#8ab0a0", fontSize: 13, lineHeight: 1.6, marginBottom: 20, padding: "12px 16px", background: "rgba(254,203,8,0.05)", borderLeft: "3px solid #FECB08", borderRadius: 4, whiteSpace: "pre-wrap" }}>
+              <strong style={{ color: "#FECB08" }}>Passage:</strong><br />
               {section.passage}
             </div>
           )}
 
           {section.questions.map((q, i) => (
             <div key={q.id} style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 10, padding: "14px 16px", marginBottom: 10 }}>
-              <p style={{ margin: "0 0 8px", color: "#c8d8e8", fontSize: 14 }}><strong style={{ color: "#c8a96e" }}>Q{i + 1}.</strong> {q.text}</p>
+              <p style={{ margin: "0 0 8px", color: "#c8e8d8", fontSize: 14 }}><strong style={{ color: "#FECB08" }}>Q{i + 1}.</strong> {q.text}</p>
               {q.type === "mcq" && q.options && (
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                  {q.options.map((opt, j) => (<span key={j} style={{ padding: "3px 10px", borderRadius: 5, fontSize: 12, background: j === q.answer ? "rgba(26,107,60,0.3)" : "rgba(255,255,255,0.05)", border: j === q.answer ? "1px solid #1a6b3c" : "1px solid transparent", color: j === q.answer ? "#6be0a0" : "#8a9bb0" }}>{String.fromCharCode(65 + j)}) {opt}{j === q.answer && " ✓"}</span>))}
+                  {q.options.map((opt, j) => (<span key={j} style={{ padding: "3px 10px", borderRadius: 5, fontSize: 12, background: j === q.answer ? "rgba(26,107,60,0.3)" : "rgba(255,255,255,0.05)", border: j === q.answer ? "1px solid #1a6b3c" : "1px solid transparent", color: j === q.answer ? "#6be0a0" : "#8ab0a0" }}>{String.fromCharCode(65 + j)}) {opt}{j === q.answer && " ✓"}</span>))}
                 </div>
               )}
-              {q.type === "written" && <span style={{ color: "#4a5a6a", fontSize: 12, fontStyle: "italic" }}>Written response</span>}
-              {section.isLikert && <span style={{ color: "#4a5a6a", fontSize: 12, fontStyle: "italic" }}>Always / Sometimes / Never</span>}
+              {q.type === "written" && <span style={{ color: "#4a6a5a", fontSize: 12, fontStyle: "italic" }}>Written response</span>}
+              {section.isLikert && <span style={{ color: "#4a6a5a", fontSize: 12, fontStyle: "italic" }}>Always / Sometimes / Never</span>}
             </div>
           ))}
         </div>
@@ -895,22 +895,22 @@ function AdminQuestions() {
 function AdminBranches() {
   return (
     <div>
-      <h3 style={{ color: "#c8a96e", marginBottom: 20 }}>RYSEN Group – Campus Branches</h3>
+      <h3 style={{ color: "#FECB08", marginBottom: 20 }}>RYSEN Group – Campus Branches</h3>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px,1fr))", gap: 14 }}>
         {BRANCHES.map((b, i) => (
-          <div key={b} style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(200,169,110,0.2)", borderRadius: 10, padding: "16px 20px" }}>
-            <div style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(200,169,110,0.2)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 8, fontSize: 16 }}>🏫</div>
-            <div style={{ color: "#e8e0d5", fontWeight: 600, fontSize: 14 }}>{b}</div>
-            <div style={{ color: "#4a5a6a", fontSize: 12, marginTop: 4 }}>Campus {i + 1} · All Bands</div>
+          <div key={b} style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(254,203,8,0.2)", borderRadius: 10, padding: "16px 20px" }}>
+            <div style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(254,203,8,0.2)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 8, fontSize: 16 }}>🏫</div>
+            <div style={{ color: "#e0e8d5", fontWeight: 600, fontSize: 14 }}>{b}</div>
+            <div style={{ color: "#4a6a5a", fontSize: 12, marginTop: 4 }}>Campus {i + 1} · All Bands</div>
           </div>
         ))}
       </div>
       <div style={{ marginTop: 24, background: "rgba(255,255,255,0.03)", borderRadius: 10, padding: 20, border: "1px solid rgba(255,255,255,0.07)" }}>
-        <h4 style={{ color: "#c8a96e", margin: "0 0 12px" }}>Band Structure</h4>
+        <h4 style={{ color: "#FECB08", margin: "0 0 12px" }}>Band Structure</h4>
         {Object.entries(BANDS).map(([b, info]) => (
           <div key={b} style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 8 }}>
-            <span style={{ background: "rgba(200,169,110,0.15)", color: "#c8a96e", padding: "2px 10px", borderRadius: 5, fontSize: 12, fontWeight: 600, minWidth: 60, textAlign: "center" }}>{info.label}</span>
-            <span style={{ color: "#8a9bb0", fontSize: 13 }}>{info.grades}</span>
+            <span style={{ background: "rgba(254,203,8,0.15)", color: "#FECB08", padding: "2px 10px", borderRadius: 5, fontSize: 12, fontWeight: 600, minWidth: 60, textAlign: "center" }}>{info.label}</span>
+            <span style={{ color: "#8ab0a0", fontSize: 13 }}>{info.grades}</span>
           </div>
         ))}
       </div>
@@ -1032,46 +1032,46 @@ function ExamInfoStep({ info, setInfo, onStart, setView, settings }) {
 
   return (
     <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: "40px 20px" }}>
-      <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(200,169,110,0.3)", borderRadius: 16, padding: 40, width: "100%", maxWidth: 500 }}>
+      <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(254,203,8,0.3)", borderRadius: 16, padding: 40, width: "100%", maxWidth: 500 }}>
         <div style={{ textAlign: "center", marginBottom: 28 }}>
           <div style={{ fontSize: 36, marginBottom: 8 }}>📋</div>
-          <h2 style={{ color: "#c8a96e", margin: 0 }}>Student Details</h2>
-          <p style={{ color: "#4a5a6a", fontSize: 13, margin: "6px 0 0" }}>Please fill in your details before starting</p>
+          <h2 style={{ color: "#FECB08", margin: 0 }}>Student Details</h2>
+          <p style={{ color: "#4a6a5a", fontSize: 13, margin: "6px 0 0" }}>Please fill in your details before starting</p>
         </div>
 
         <div style={{ marginBottom: 16 }}>
-          <label style={{ display: "block", color: "#8a9bb0", fontSize: 13, marginBottom: 6 }}>Full Name</label>
+          <label style={{ display: "block", color: "#8ab0a0", fontSize: 13, marginBottom: 6 }}>Full Name</label>
           <input type="text" placeholder="Enter your full name" value={info.name}
             onChange={e => setInfo(i => ({ ...i, name: e.target.value }))}
-            style={{ width: "100%", padding: "10px 14px", borderRadius: 8, border: "1px solid rgba(200,169,110,0.25)", background: "rgba(255,255,255,0.06)", color: "#e8e0d5", fontSize: 14, boxSizing: "border-box" }} />
+            style={{ width: "100%", padding: "10px 14px", borderRadius: 8, border: "1px solid rgba(254,203,8,0.25)", background: "rgba(255,255,255,0.06)", color: "#e0e8d5", fontSize: 14, boxSizing: "border-box" }} />
         </div>
 
         <div style={{ marginBottom: 16 }}>
-          <label style={{ display: "block", color: "#8a9bb0", fontSize: 13, marginBottom: 6 }}>Phone Number <span style={{ color: "#4a5a6a", fontSize: 11 }}>(parent/guardian, for reference)</span></label>
+          <label style={{ display: "block", color: "#8ab0a0", fontSize: 13, marginBottom: 6 }}>Phone Number <span style={{ color: "#4a6a5a", fontSize: 11 }}>(parent/guardian, for reference)</span></label>
           <input type="tel" placeholder="10-digit mobile number" value={info.phone}
             onChange={e => setInfo(i => ({ ...i, phone: e.target.value }))}
-            style={{ width: "100%", padding: "10px 14px", borderRadius: 8, border: "1px solid rgba(200,169,110,0.25)", background: "rgba(255,255,255,0.06)", color: "#e8e0d5", fontSize: 14, boxSizing: "border-box" }} />
+            style={{ width: "100%", padding: "10px 14px", borderRadius: 8, border: "1px solid rgba(254,203,8,0.25)", background: "rgba(255,255,255,0.06)", color: "#e0e8d5", fontSize: 14, boxSizing: "border-box" }} />
         </div>
 
         <div style={{ marginBottom: 16 }}>
-          <label style={{ display: "block", color: "#8a9bb0", fontSize: 13, marginBottom: 6 }}>Class / Grade Applied For</label>
+          <label style={{ display: "block", color: "#8ab0a0", fontSize: 13, marginBottom: 6 }}>Class / Grade Applied For</label>
           <select value={info.grade} onChange={e => handleGradeChange(e.target.value)}
-            style={{ width: "100%", padding: "10px 14px", borderRadius: 8, border: "1px solid rgba(200,169,110,0.25)", background: "#1a2a3a", color: "#e8e0d5", fontSize: 14 }}>
+            style={{ width: "100%", padding: "10px 14px", borderRadius: 8, border: "1px solid rgba(254,203,8,0.25)", background: "#0f2a2a", color: "#e0e8d5", fontSize: 14 }}>
             <option value="">Select Class</option>
             {[3, 4, 5, 6, 7, 8, 9, 10].map(g => <option key={g} value={g}>Class {g}</option>)}
           </select>
         </div>
 
         {info.band && (
-          <div style={{ background: "rgba(200,169,110,0.1)", border: "1px solid rgba(200,169,110,0.3)", borderRadius: 8, padding: "10px 14px", marginBottom: 16 }}>
-            <span style={{ color: "#c8a96e", fontSize: 13 }}>✦ Assigned Band: <strong>Band {info.band} – {BANDS[info.band].grades}</strong></span>
+          <div style={{ background: "rgba(254,203,8,0.1)", border: "1px solid rgba(254,203,8,0.3)", borderRadius: 8, padding: "10px 14px", marginBottom: 16 }}>
+            <span style={{ color: "#FECB08", fontSize: 13 }}>✦ Assigned Band: <strong>Band {info.band} – {BANDS[info.band].grades}</strong></span>
           </div>
         )}
 
         <div style={{ marginBottom: 20 }}>
-          <label style={{ display: "block", color: "#8a9bb0", fontSize: 13, marginBottom: 6 }}>Campus / Branch</label>
+          <label style={{ display: "block", color: "#8ab0a0", fontSize: 13, marginBottom: 6 }}>Campus / Branch</label>
           <select value={info.branch} onChange={e => setInfo(i => ({ ...i, branch: e.target.value }))}
-            style={{ width: "100%", padding: "10px 14px", borderRadius: 8, border: "1px solid rgba(200,169,110,0.25)", background: "#1a2a3a", color: "#e8e0d5", fontSize: 14 }}>
+            style={{ width: "100%", padding: "10px 14px", borderRadius: 8, border: "1px solid rgba(254,203,8,0.25)", background: "#0f2a2a", color: "#e0e8d5", fontSize: 14 }}>
             <option value="">Select Branch</option>
             {BRANCHES.map(b => <option key={b}>{b}</option>)}
           </select>
@@ -1080,14 +1080,14 @@ function ExamInfoStep({ info, setInfo, onStart, setView, settings }) {
         {(settings?.timeLimits?.[info.band] > 0) && (
           <div style={{ background: "rgba(26,58,107,0.2)", border: "1px solid rgba(138,176,224,0.25)", borderRadius: 8, padding: "10px 14px", marginBottom: 20, display: "flex", alignItems: "center", gap: 10 }}>
             <span style={{ fontSize: 18 }}>⏱</span>
-            <span style={{ color: "#8ab0e0", fontSize: 13 }}>Time Limit: <strong>{settings.timeLimits[info.band]} minutes</strong>. The exam will auto-submit when time is up.</span>
+            <span style={{ color: "#a0d4b0", fontSize: 13 }}>Time Limit: <strong>{settings.timeLimits[info.band]} minutes</strong>. The exam will auto-submit when time is up.</span>
           </div>
         )}
 
-        <button onClick={onStart} style={{ width: "100%", background: "linear-gradient(135deg, #1a6b3c, #0f4d2a)", color: "#fff", border: "none", borderRadius: 10, padding: "13px", fontSize: 15, fontWeight: 700, cursor: "pointer", letterSpacing: 0.5 }}>
+        <button onClick={onStart} style={{ width: "100%", background: "linear-gradient(135deg, #225632, #1a4528)", color: "#fff", border: "none", borderRadius: 10, padding: "13px", fontSize: 15, fontWeight: 700, cursor: "pointer", letterSpacing: 0.5 }}>
           Begin Assessment →
         </button>
-        <button onClick={() => setView("home")} style={{ width: "100%", marginTop: 10, background: "transparent", color: "#4a5a6a", border: "none", cursor: "pointer", fontSize: 13, padding: 8 }}>← Back</button>
+        <button onClick={() => setView("home")} style={{ width: "100%", marginTop: 10, background: "transparent", color: "#4a6a5a", border: "none", cursor: "pointer", fontSize: 13, padding: 8 }}>← Back</button>
       </div>
     </div>
   );
@@ -1125,21 +1125,21 @@ function ExamSection({ info, answers, setAnswers, currentSection, setCurrentSect
       {/* Top bar */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, flexWrap: "wrap", gap: 10 }}>
         <div>
-          <div style={{ color: "#c8a96e", fontWeight: 700, fontSize: 15 }}>RYSEN – Band {band} Assessment</div>
-          <div style={{ color: "#4a5a6a", fontSize: 12 }}>{info.name} · Grade {info.grade} · {info.branch}</div>
+          <div style={{ color: "#FECB08", fontWeight: 700, fontSize: 15 }}>RYSEN – Band {band} Assessment</div>
+          <div style={{ color: "#4a6a5a", fontSize: 12 }}>{info.name} · Grade {info.grade} · {info.branch}</div>
         </div>
         <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-          <div style={{ background: timerWarning ? "rgba(200,50,50,0.2)" : "rgba(255,255,255,0.05)", borderRadius: 8, padding: "6px 14px", color: timerWarning ? "#e07070" : "#c8a96e", fontFamily: "monospace", fontSize: 16, border: timerWarning ? "1px solid rgba(200,50,50,0.4)" : "none" }}>
+          <div style={{ background: timerWarning ? "rgba(200,50,50,0.2)" : "rgba(255,255,255,0.05)", borderRadius: 8, padding: "6px 14px", color: timerWarning ? "#e07070" : "#FECB08", fontFamily: "monospace", fontSize: 16, border: timerWarning ? "1px solid rgba(200,50,50,0.4)" : "none" }}>
             {remaining !== null ? `⏱ ${remMins}:${remSecs}` : `⏱ ${mins}:${secs}`}
             {remaining !== null && <span style={{ fontSize: 10, marginLeft: 4, opacity: 0.7 }}>left</span>}
           </div>
-          <div style={{ color: "#4a5a6a", fontSize: 12 }}>{progress}/{total} answered</div>
+          <div style={{ color: "#4a6a5a", fontSize: 12 }}>{progress}/{total} answered</div>
         </div>
       </div>
 
       {/* Progress bar */}
       <div style={{ height: 4, background: "rgba(255,255,255,0.08)", borderRadius: 2, marginBottom: 20 }}>
-        <div style={{ height: "100%", background: "linear-gradient(90deg, #c8a96e, #1a6b3c)", borderRadius: 2, width: `${total > 0 ? (progress / total) * 100 : 0}%`, transition: "width 0.3s" }} />
+        <div style={{ height: "100%", background: "linear-gradient(90deg, #FECB08, #1a6b3c)", borderRadius: 2, width: `${total > 0 ? (progress / total) * 100 : 0}%`, transition: "width 0.3s" }} />
       </div>
 
       <div style={{ display: "flex", gap: 8, marginBottom: 24, flexWrap: "wrap" }}>
@@ -1160,9 +1160,9 @@ function ExamSection({ info, answers, setAnswers, currentSection, setCurrentSect
               }
             }} style={{
               padding: "7px 14px", borderRadius: 8, border: "1px solid",
-              borderColor: currentSection === s ? "#c8a96e" : complete ? "#1a6b3c" : "rgba(255,255,255,0.1)",
-              background: currentSection === s ? "rgba(200,169,110,0.15)" : complete ? "rgba(26,107,60,0.1)" : "transparent",
-              color: currentSection === s ? "#c8a96e" : complete ? "#6be0a0" : "#8a9bb0",
+              borderColor: currentSection === s ? "#FECB08" : complete ? "#1a6b3c" : "rgba(255,255,255,0.1)",
+              background: currentSection === s ? "rgba(254,203,8,0.15)" : complete ? "rgba(26,107,60,0.1)" : "transparent",
+              color: currentSection === s ? "#FECB08" : complete ? "#6be0a0" : "#8ab0a0",
               cursor: "pointer", fontSize: 12
             }}>
               {complete ? "✓ " : ""}Sec {s}
@@ -1173,10 +1173,10 @@ function ExamSection({ info, answers, setAnswers, currentSection, setCurrentSect
 
       {/* Questions */}
       <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 14, padding: "24px 24px" }}>
-        <h3 style={{ color: "#c8a96e", margin: "0 0 20px", fontSize: 16 }}>Section {currentSection}: {section?.title}</h3>
+        <h3 style={{ color: "#FECB08", margin: "0 0 20px", fontSize: 16 }}>Section {currentSection}: {section?.title}</h3>
 
         {section?.passage && (
-          <div style={{ color: "#c8d8e8", fontSize: 14, lineHeight: 1.7, marginBottom: 24, padding: "16px", background: "rgba(200,169,110,0.05)", borderLeft: "4px solid #c8a96e", borderRadius: 4, whiteSpace: "pre-wrap" }}>
+          <div style={{ color: "#c8e8d8", fontSize: 14, lineHeight: 1.7, marginBottom: 24, padding: "16px", background: "rgba(254,203,8,0.05)", borderLeft: "4px solid #FECB08", borderRadius: 4, whiteSpace: "pre-wrap" }}>
             {section.passage}
           </div>
         )}
@@ -1204,7 +1204,7 @@ function ExamSection({ info, answers, setAnswers, currentSection, setCurrentSect
             }
           }}
           disabled={sections.indexOf(currentSection) === 0}
-          style={{ background: "rgba(255,255,255,0.06)", color: "#8a9bb0", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "10px 20px", cursor: "pointer", fontSize: 13 }}
+          style={{ background: "rgba(255,255,255,0.06)", color: "#8ab0a0", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "10px 20px", cursor: "pointer", fontSize: 13 }}
         >← Previous</button>
 
         {sections.indexOf(currentSection) < sections.length - 1 ? (
@@ -1216,24 +1216,24 @@ function ExamSection({ info, answers, setAnswers, currentSection, setCurrentSect
               if (curAnsCount < curSqs.length) setConfirmNav(targetS);
               else setCurrentSection(targetS);
             }}
-            style={{ background: "#1a3a6b", color: "#8ab0e0", border: "none", borderRadius: 8, padding: "10px 24px", cursor: "pointer", fontSize: 13, fontWeight: 600 }}
+            style={{ background: "#033D4C", color: "#a0d4b0", border: "none", borderRadius: 8, padding: "10px 24px", cursor: "pointer", fontSize: 13, fontWeight: 600 }}
           >Next Section →</button>
         ) : (
           <button
             onClick={() => setConfirmSubmit(true)}
-            style={{ background: "linear-gradient(135deg, #1a6b3c, #0f4d2a)", color: "#fff", border: "none", borderRadius: 8, padding: "10px 24px", cursor: "pointer", fontSize: 13, fontWeight: 700 }}
+            style={{ background: "linear-gradient(135deg, #225632, #1a4528)", color: "#fff", border: "none", borderRadius: 8, padding: "10px 24px", cursor: "pointer", fontSize: 13, fontWeight: 700 }}
           >Submit Assessment ✓</button>
         )}
       </div>
 
       {confirmNav !== null && (
         <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000 }}>
-          <div style={{ background: "#1a2a3a", border: "1px solid rgba(200,50,50,0.4)", borderRadius: 16, padding: 36, maxWidth: 380, textAlign: "center", boxShadow: "0 8px 32px rgba(200,50,50,0.2)" }}>
+          <div style={{ background: "#0f2a2a", border: "1px solid rgba(200,50,50,0.4)", borderRadius: 16, padding: 36, maxWidth: 380, textAlign: "center", boxShadow: "0 8px 32px rgba(200,50,50,0.2)" }}>
             <div style={{ fontSize: 40, marginBottom: 12 }}>⚠️</div>
             <h3 style={{ color: "#e07070", margin: "0 0 10px" }}>Questions Not Attempted!</h3>
-            <p style={{ color: "#8a9bb0", fontSize: 14, marginBottom: 20 }}>You have unattempted questions in the current section. Are you sure you want to skip and proceed further?</p>
+            <p style={{ color: "#8ab0a0", fontSize: 14, marginBottom: 20 }}>You have unattempted questions in the current section. Are you sure you want to skip and proceed further?</p>
             <div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
-              <button onClick={() => setConfirmNav(null)} style={{ background: "#1a3a6b", color: "#8ab0e0", border: "none", borderRadius: 8, padding: "10px 20px", cursor: "pointer", fontWeight: 600 }}>Go Back</button>
+              <button onClick={() => setConfirmNav(null)} style={{ background: "#033D4C", color: "#a0d4b0", border: "none", borderRadius: 8, padding: "10px 20px", cursor: "pointer", fontWeight: 600 }}>Go Back</button>
               <button onClick={() => { setCurrentSection(confirmNav); setConfirmNav(null); }} style={{ background: "rgba(200,50,50,0.2)", color: "#e07070", border: "1px solid rgba(200,50,50,0.3)", borderRadius: 8, padding: "10px 20px", cursor: "pointer" }}>Skip & Proceed</button>
             </div>
           </div>
@@ -1242,17 +1242,17 @@ function ExamSection({ info, answers, setAnswers, currentSection, setCurrentSect
 
       {confirmSubmit && (
         <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000 }}>
-          <div style={{ background: "#1a2a3a", border: "1px solid rgba(200,169,110,0.4)", borderRadius: 16, padding: 36, maxWidth: 380, textAlign: "center" }}>
+          <div style={{ background: "#0f2a2a", border: "1px solid rgba(254,203,8,0.4)", borderRadius: 16, padding: 36, maxWidth: 380, textAlign: "center" }}>
             <div style={{ fontSize: 40, marginBottom: 12 }}>{isSubmitting ? "⏳" : "📤"}</div>
-            <h3 style={{ color: "#c8a96e", margin: "0 0 10px" }}>{isSubmitting ? "Generating Report..." : "Submit Assessment?"}</h3>
+            <h3 style={{ color: "#FECB08", margin: "0 0 10px" }}>{isSubmitting ? "Generating Report..." : "Submit Assessment?"}</h3>
             {!isSubmitting && (
-              <p style={{ color: "#8a9bb0", fontSize: 14, marginBottom: 20 }}>You have answered {progress} of {total} questions. Once submitted, you cannot go back.</p>
+              <p style={{ color: "#8ab0a0", fontSize: 14, marginBottom: 20 }}>You have answered {progress} of {total} questions. Once submitted, you cannot go back.</p>
             )}
             {isSubmitting ? (
-              <p style={{ color: "#8a9bb0", fontSize: 14, marginTop: 10 }}>Please wait while we process your answers and generate your BASE Report.</p>
+              <p style={{ color: "#8ab0a0", fontSize: 14, marginTop: 10 }}>Please wait while we process your answers and generate your BASE Report.</p>
             ) : (
               <div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
-                <button onClick={() => setConfirmSubmit(false)} style={{ background: "rgba(255,255,255,0.07)", color: "#8a9bb0", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "10px 20px", cursor: "pointer" }}>Cancel</button>
+                <button onClick={() => setConfirmSubmit(false)} style={{ background: "rgba(255,255,255,0.07)", color: "#8ab0a0", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "10px 20px", cursor: "pointer" }}>Cancel</button>
                 <button onClick={onSubmit} style={{ background: "#1a6b3c", color: "#fff", border: "none", borderRadius: 8, padding: "10px 20px", cursor: "pointer", fontWeight: 700 }}>Submit</button>
               </div>
             )}
@@ -1279,8 +1279,8 @@ function QuestionBlock({ q, index, answer, setAnswer, answers, setAnswers }) {
           Unattempted
         </div>
       ) : null}
-      <p style={{ color: "#c8d8e8", fontSize: 14, lineHeight: 1.7, margin: "0 0 12px", paddingRight: 80 }}>
-        <strong style={{ color: "#c8a96e" }}>Q{index + 1}.</strong> {q.text}
+      <p style={{ color: "#c8e8d8", fontSize: 14, lineHeight: 1.7, margin: "0 0 12px", paddingRight: 80 }}>
+        <strong style={{ color: "#FECB08" }}>Q{index + 1}.</strong> {q.text}
       </p>
 
       {/* ── Image-based written question ── */}
@@ -1289,11 +1289,11 @@ function QuestionBlock({ q, index, answer, setAnswer, answers, setAnswers }) {
           <img
             src={q.image}
             alt="Question image"
-            style={{ width: "100%", maxWidth: 520, borderRadius: 8, marginBottom: 18, border: "2px solid rgba(200,169,110,0.3)", display: "block" }}
+            style={{ width: "100%", maxWidth: 520, borderRadius: 8, marginBottom: 18, border: "2px solid rgba(254,203,8,0.3)", display: "block" }}
           />
           {q.subQuestions?.map((sq, si) => (
             <div key={sq.id} style={{ marginBottom: 16 }}>
-              <p style={{ color: "#c8d8e8", fontSize: 13, marginBottom: 8, fontWeight: 600 }}>
+              <p style={{ color: "#c8e8d8", fontSize: 13, marginBottom: 8, fontWeight: 600 }}>
                 {String.fromCharCode(96 + si + 1)}) {sq.label}
               </p>
               <textarea
@@ -1306,7 +1306,7 @@ function QuestionBlock({ q, index, answer, setAnswer, answers, setAnswers }) {
                 autoCapitalize="off"
                 autoComplete="off"
                 data-gramm="false"
-                style={{ width: "100%", padding: "10px 14px", borderRadius: 8, border: "1px solid rgba(200,169,110,0.25)", background: "rgba(255,255,255,0.05)", color: "#e8e0d5", fontSize: 13, resize: "vertical", boxSizing: "border-box", lineHeight: 1.6 }}
+                style={{ width: "100%", padding: "10px 14px", borderRadius: 8, border: "1px solid rgba(254,203,8,0.25)", background: "rgba(255,255,255,0.05)", color: "#e0e8d5", fontSize: 13, resize: "vertical", boxSizing: "border-box", lineHeight: 1.6 }}
               />
             </div>
           ))}
@@ -1318,13 +1318,13 @@ function QuestionBlock({ q, index, answer, setAnswer, answers, setAnswers }) {
           {q.options.map((opt, j) => (
             <label key={j} style={{
               display: "flex", alignItems: "center", gap: 10, cursor: "pointer",
-              background: answer === j ? "rgba(200,169,110,0.12)" : "rgba(255,255,255,0.03)",
-              border: `1px solid ${answer === j ? "rgba(200,169,110,0.5)" : "rgba(255,255,255,0.07)"}`,
+              background: answer === j ? "rgba(254,203,8,0.12)" : "rgba(255,255,255,0.03)",
+              border: `1px solid ${answer === j ? "rgba(254,203,8,0.5)" : "rgba(255,255,255,0.07)"}`,
               borderRadius: 8, padding: "10px 14px", transition: "all 0.2s"
             }}>
               <input type="radio" name={q.id} checked={answer === j} onChange={() => setAnswer(j)}
-                style={{ accentColor: "#c8a96e" }} />
-              <span style={{ color: answer === j ? "#c8a96e" : "#8a9bb0", fontSize: 14 }}>
+                style={{ accentColor: "#FECB08" }} />
+              <span style={{ color: answer === j ? "#FECB08" : "#8ab0a0", fontSize: 14 }}>
                 <strong>{String.fromCharCode(65 + j)})</strong> {opt}
               </span>
             </label>
@@ -1344,7 +1344,7 @@ function QuestionBlock({ q, index, answer, setAnswer, answers, setAnswers }) {
           data-gramm="false"
           data-gramm_editor="false"
           data-enable-grammarly="false"
-          style={{ width: "100%", padding: "10px 14px", borderRadius: 8, border: "1px solid rgba(200,169,110,0.25)", background: "rgba(255,255,255,0.05)", color: "#e8e0d5", fontSize: 13, resize: "vertical", boxSizing: "border-box", lineHeight: 1.6 }}
+          style={{ width: "100%", padding: "10px 14px", borderRadius: 8, border: "1px solid rgba(254,203,8,0.25)", background: "rgba(255,255,255,0.05)", color: "#e0e8d5", fontSize: 13, resize: "vertical", boxSizing: "border-box", lineHeight: 1.6 }}
         />
       )}
     </div>
@@ -1354,22 +1354,22 @@ function QuestionBlock({ q, index, answer, setAnswer, answers, setAnswers }) {
 function LikertSection({ questions, answers, setAnswer }) {
   return (
     <div>
-      <p style={{ color: "#4a5a6a", fontSize: 12, marginBottom: 16, fontStyle: "italic" }}>
+      <p style={{ color: "#4a6a5a", fontSize: 12, marginBottom: 16, fontStyle: "italic" }}>
         Read each statement and choose: Always (1) · Sometimes (2) · Never (3). There are no right or wrong answers.
       </p>
       {questions.map((q, i) => (
         <div key={q.id} style={{ marginBottom: 16, background: "rgba(255,255,255,0.03)", borderRadius: 8, padding: "12px 14px", border: "1px solid rgba(255,255,255,0.05)" }}>
-          <p style={{ color: "#c8d8e8", fontSize: 13, margin: "0 0 10px" }}><strong style={{ color: "#c8a96e" }}>{i + 1}.</strong> {q.text}</p>
+          <p style={{ color: "#c8e8d8", fontSize: 13, margin: "0 0 10px" }}><strong style={{ color: "#FECB08" }}>{i + 1}.</strong> {q.text}</p>
           <div style={{ display: "flex", gap: 10 }}>
             {[["Always", 1], ["Sometimes", 2], ["Never", 3]].map(([label, val]) => (
               <label key={val} style={{
                 display: "flex", alignItems: "center", gap: 6, cursor: "pointer",
-                background: answers[q.id] === val ? "rgba(200,169,110,0.15)" : "rgba(255,255,255,0.04)",
-                border: `1px solid ${answers[q.id] === val ? "rgba(200,169,110,0.5)" : "rgba(255,255,255,0.07)"}`,
+                background: answers[q.id] === val ? "rgba(254,203,8,0.15)" : "rgba(255,255,255,0.04)",
+                border: `1px solid ${answers[q.id] === val ? "rgba(254,203,8,0.5)" : "rgba(255,255,255,0.07)"}`,
                 borderRadius: 6, padding: "6px 12px"
               }}>
-                <input type="radio" name={q.id} checked={answers[q.id] === val} onChange={() => setAnswer(q.id, val)} style={{ accentColor: "#c8a96e" }} />
-                <span style={{ color: answers[q.id] === val ? "#c8a96e" : "#8a9bb0", fontSize: 12 }}>{label}</span>
+                <input type="radio" name={q.id} checked={answers[q.id] === val} onChange={() => setAnswer(q.id, val)} style={{ accentColor: "#FECB08" }} />
+                <span style={{ color: answers[q.id] === val ? "#FECB08" : "#8ab0a0", fontSize: 12 }}>{label}</span>
               </label>
             ))}
           </div>
@@ -1396,7 +1396,7 @@ function ReportPage({ submission, setView, isAdmin }) {
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: Georgia, serif; color: #1a1a2e; background: #fff; }
     table { border-collapse: collapse; width: 100%; }
-    th, td { border: 1px solid #c8d8e8; padding: 7px 10px; font-size: 11px; }
+    th, td { border: 1px solid #c8e8d8; padding: 7px 10px; font-size: 11px; }
 
     @page {
       size: A4 portrait;
@@ -1556,7 +1556,7 @@ function ReportPage({ submission, setView, isAdmin }) {
   const SectionTable = ({ title, indicators }) => (
     <div style={{ marginBottom: 22 }}>
       <div style={{ background: "#033D4C", color: "#fff", padding: "8px 14px", fontWeight: 700, fontSize: 13, borderRadius: "6px 6px 0 0" }}>{title}</div>
-      <table style={{ width: "100%", borderCollapse: "collapse", border: "1px solid #c8d8e8" }}>
+      <table style={{ width: "100%", borderCollapse: "collapse", border: "1px solid #c8e8d8" }}>
         <thead>
           <tr>
             <th style={thStyle}>Indicator</th>
@@ -1606,11 +1606,11 @@ function ReportPage({ submission, setView, isAdmin }) {
     <div style={{ maxWidth: 820, margin: "0 auto", padding: "32px 20px" }}>
       {/* Action buttons */}
       <div style={{ display: "flex", gap: 12, marginBottom: 24, flexWrap: "wrap" }}>
-        <button onClick={downloadPDF} style={{ background: "linear-gradient(135deg, #1a3a6b, #0f2a4a)", color: "#8ab0e0", border: "1px solid rgba(138,176,224,0.4)", borderRadius: 8, padding: "11px 22px", cursor: "pointer", fontSize: 14, fontWeight: 600 }}>
+        <button onClick={downloadPDF} style={{ background: "linear-gradient(135deg, #033D4C, #225632)", color: "#a0d4b0", border: "1px solid rgba(160,212,176,0.4)", borderRadius: 8, padding: "11px 22px", cursor: "pointer", fontSize: 14, fontWeight: 600 }}>
           📥 Download / Print PDF
         </button>
         {!isAdmin && (
-          <button onClick={() => setView("home")} style={{ background: "rgba(255,255,255,0.06)", color: "#8a9bb0", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "11px 18px", cursor: "pointer", fontSize: 13 }}>
+          <button onClick={() => setView("home")} style={{ background: "rgba(255,255,255,0.06)", color: "#8ab0a0", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "11px 18px", cursor: "pointer", fontSize: 13 }}>
             ← Back to Home
           </button>
         )}
@@ -1644,7 +1644,7 @@ function ReportPage({ submission, setView, isAdmin }) {
               ].map(([k, v]) => (
                 <div key={k}>
                   <span style={{ color: "#6a7a8a", fontSize: 11, display: "block", marginBottom: 2 }}>{k}</span>
-                  <span style={{ color: "#1a2a3a", fontWeight: 600 }}>{v}</span>
+                  <span style={{ color: "#0f2a2a", fontWeight: 600 }}>{v}</span>
                 </div>
               ))}
             </div>
@@ -1695,7 +1695,7 @@ function ReportPage({ submission, setView, isAdmin }) {
           {/* ── Emotional & Social ── */}
           <div style={{ marginBottom: 22 }}>
             <div style={{ background: "#033D4C", color: "#fff", padding: "8px 14px", fontWeight: 700, fontSize: 13, borderRadius: "6px 6px 0 0" }}>Learning Disposition – Emotional & Social Adjustment</div>
-            <div style={{ border: "1px solid #c8d8e8", borderTop: "none", borderRadius: "0 0 6px 6px", overflow: "hidden" }}>
+            <div style={{ border: "1px solid #c8e8d8", borderTop: "none", borderRadius: "0 0 6px 6px", overflow: "hidden" }}>
               <table style={{ width: "100%", borderCollapse: "collapse" }}>
                 <thead>
                   <tr>
@@ -1747,7 +1747,7 @@ function ReportPage({ submission, setView, isAdmin }) {
 
           {/* ── Important Note for Parents ── */}
           <div style={{ marginBottom: 22, background: "#fffbf0", border: "1px solid #f0d090", borderRadius: 8, padding: "14px 18px" }}>
-            <div style={{ fontWeight: 700, color: "#8b6914", fontSize: 13, marginBottom: 6 }}>📋 Important Note for Parents</div>
+            <div style={{ fontWeight: 700, color: "#7D783E", fontSize: 13, marginBottom: 6 }}>📋 Important Note for Parents</div>
             <p style={{ color: "#5a4a2a", fontSize: 12, lineHeight: 1.75, margin: 0 }}>
               This profile reflects the child's learning readiness at the time of admission. Children develop at different rates, and this information supports a smooth and supportive transition into formal schooling. This is a diagnostic profile — not a pass/fail result.
             </p>
@@ -1774,15 +1774,15 @@ function ReportPage({ submission, setView, isAdmin }) {
       {!isAdmin && (
         <div style={{ marginTop: 24, textAlign: "center" }}>
           <div style={{ display: "flex", justifyContent: "center", gap: 14, flexWrap: "wrap" }}>
-            <button onClick={downloadPDF} style={{ background: "linear-gradient(135deg, #1a6b3c, #0f4d2a)", color: "#fff", border: "none", borderRadius: 10, padding: "13px 40px", fontSize: 15, fontWeight: 700, cursor: "pointer", letterSpacing: 0.5 }}>
+            <button onClick={downloadPDF} style={{ background: "linear-gradient(135deg, #225632, #1a4528)", color: "#fff", border: "none", borderRadius: 10, padding: "13px 40px", fontSize: 15, fontWeight: 700, cursor: "pointer", letterSpacing: 0.5 }}>
               📥 Download Your Report (PDF)
             </button>
-            <button onClick={() => downloadResponseKey(submission)} style={{ background: "transparent", color: "#c8a96e", border: "2px solid #c8a96e", borderRadius: 10, padding: "11px 30px", fontSize: 15, fontWeight: 700, cursor: "pointer", letterSpacing: 0.5 }}>
+            <button onClick={() => downloadResponseKey(submission)} style={{ background: "transparent", color: "#FECB08", border: "2px solid #FECB08", borderRadius: 10, padding: "11px 30px", fontSize: 15, fontWeight: 700, cursor: "pointer", letterSpacing: 0.5 }}>
               🗝 Download Response Key
             </button>
           </div>
-          <p style={{ color: "#4a5a6a", fontSize: 12, marginTop: 10 }}>Opens print dialog — choose "Save as PDF" to download</p>
-          <button onClick={() => setView("home")} style={{ marginTop: 12, background: "transparent", color: "#4a5a6a", border: "none", cursor: "pointer", fontSize: 13 }}>← Back to Home</button>
+          <p style={{ color: "#4a6a5a", fontSize: 12, marginTop: 10 }}>Opens print dialog — choose "Save as PDF" to download</p>
+          <button onClick={() => setView("home")} style={{ marginTop: 12, background: "transparent", color: "#4a6a5a", border: "none", cursor: "pointer", fontSize: 13 }}>← Back to Home</button>
         </div>
       )}
     </div>
