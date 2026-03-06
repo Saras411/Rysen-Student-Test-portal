@@ -572,6 +572,8 @@ function AdminResults() {
   const [selectedReport, setSelectedReport] = useState(null);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selected, setSelected] = useState(new Set());
+  const [bulkDeleting, setBulkDeleting] = useState(false);
 
   const API_BASE = import.meta.env.VITE_API_URL || '';
 
@@ -590,18 +592,66 @@ function AdminResults() {
 
   const filtered = data.filter(s => (filter.branch === "All" || s.branch === filter.branch) && (filter.band === "All" || String(s.band) === filter.band));
 
+  const allFilteredIds = filtered.map(s => s.id);
+  const allSelected = allFilteredIds.length > 0 && allFilteredIds.every(id => selected.has(id));
+  const someSelected = selected.size > 0;
+
+  function toggleOne(id) {
+    setSelected(prev => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+  }
+
+  function toggleAll() {
+    if (allSelected) {
+      setSelected(prev => {
+        const next = new Set(prev);
+        allFilteredIds.forEach(id => next.delete(id));
+        return next;
+      });
+    } else {
+      setSelected(prev => {
+        const next = new Set(prev);
+        allFilteredIds.forEach(id => next.add(id));
+        return next;
+      });
+    }
+  }
+
   function deleteSubmission(id) {
-    if (!window.confirm("Are you sure you want to delete this specific candidate response? This action cannot be undone.")) return;
+    if (!window.confirm("Delete this candidate response? This cannot be undone.")) return;
     fetch(`${API_BASE}/api/submissions/${id}`, { method: 'DELETE' })
       .then(res => res.json())
       .then(json => {
-        if (json.success) setData(prev => prev.filter(s => s.id !== id));
-        else alert("Failed to delete response");
+        if (json.success) {
+          setData(prev => prev.filter(s => s.id !== id));
+          setSelected(prev => { const next = new Set(prev); next.delete(id); return next; });
+        } else alert("Failed to delete response");
       })
-      .catch(err => {
-        console.error("Delete error:", err);
-        alert("An error occurred while deleting.");
-      });
+      .catch(() => alert("An error occurred while deleting."));
+  }
+
+  function deleteSelected() {
+    const ids = [...selected];
+    if (ids.length === 0) return;
+    if (!window.confirm(`Delete ${ids.length} selected response(s)? This cannot be undone.`)) return;
+    setBulkDeleting(true);
+    fetch(`${API_BASE}/api/submissions/bulk-delete`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ids })
+    })
+      .then(res => res.json())
+      .then(json => {
+        if (json.success) {
+          setData(prev => prev.filter(s => !ids.includes(s.id)));
+          setSelected(new Set());
+        } else alert("Bulk delete failed");
+        setBulkDeleting(false);
+      })
+      .catch(() => { alert("Error during bulk delete"); setBulkDeleting(false); });
   }
 
   function downloadXLSX() {
@@ -614,9 +664,8 @@ function AdminResults() {
     a.click();
   }
 
-
   if (selectedReport) {
-    return (<div><button onClick={() => setSelectedReport(null)} style={{ background: "rgba(255,255,255,0.07)", color: "#8a9bb0", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "8px 16px", cursor: "pointer", fontSize: 13, marginBottom: 20 }}>← Back to Results</button><ReportPage submission={selectedReport} setView={null} isAdmin={true} /></div>);
+    return (<div><button onClick={() => setSelectedReport(null)} style={{ background: "rgba(255,255,255,0.07)", color: "#8a9bb0", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "8px 16px", cursor: "pointer", fontSize: 13, marginBottom: 20 }}>&#8592; Back to Results</button><ReportPage submission={selectedReport} setView={null} isAdmin={true} /></div>);
   }
 
   return (
@@ -628,44 +677,68 @@ function AdminResults() {
         </select>
         <select value={filter.band} onChange={e => setFilter(f => ({ ...f, band: e.target.value }))} style={{ padding: "8px 12px", borderRadius: 8, border: "1px solid rgba(200,169,110,0.3)", background: "#1a2a3a", color: "#e8e0d5", fontSize: 13 }}>
           <option value="All">All Bands</option>
-          <option value="3">Band 3 (Gr III–V)</option>
-          <option value="4">Band 4 (Gr VI–VIII)</option>
-          <option value="5">Band 5 (Gr IX–X)</option>
+          <option value="3">Band 3 (Gr III&#8211;V)</option>
+          <option value="4">Band 4 (Gr VI&#8211;VIII)</option>
+          <option value="5">Band 5 (Gr IX&#8211;X)</option>
         </select>
-        <button onClick={downloadXLSX} style={{ background: "#1a6b3c", color: "#fff", border: "none", borderRadius: 8, padding: "8px 16px", cursor: "pointer", fontSize: 13, fontWeight: 600 }}>📥 Download Excel (.xlsx)</button>
+        <button onClick={downloadXLSX} style={{ background: "#1a6b3c", color: "#fff", border: "none", borderRadius: 8, padding: "8px 16px", cursor: "pointer", fontSize: 13, fontWeight: 600 }}>&#128229; Download Excel</button>
         <span style={{ color: "#4a5a6a", fontSize: 13 }}>{filtered.length} submission(s)</span>
+        {someSelected && (
+          <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "7px 16px", background: "rgba(200,50,50,0.12)", border: "1px solid rgba(200,50,50,0.3)", borderRadius: 8 }}>
+            <span style={{ color: "#e07070", fontSize: 13, fontWeight: 600 }}>{selected.size} selected</span>
+            <button onClick={deleteSelected} disabled={bulkDeleting} style={{ background: "rgba(200,50,50,0.25)", color: "#e07070", border: "1px solid rgba(200,50,50,0.4)", borderRadius: 6, padding: "5px 14px", cursor: "pointer", fontSize: 12, fontWeight: 700 }}>
+              {bulkDeleting ? "Deleting..." : "&#128465; Delete Selected"}
+            </button>
+            <button onClick={() => setSelected(new Set())} style={{ background: "transparent", color: "#8a9bb0", border: "none", cursor: "pointer", fontSize: 12 }}>&#10005; Clear</button>
+          </div>
+        )}
       </div>
       {loading ? (
         <div style={{ textAlign: "center", padding: 60, color: "#4a5a6a" }}><p>Loading remote submissions...</p></div>
       ) : filtered.length === 0 ? (
-        <div style={{ textAlign: "center", padding: 60, color: "#4a5a6a" }}><div style={{ fontSize: 48, marginBottom: 12 }}>📭</div><p>No submissions yet. Students completing exams will appear here.</p></div>
+        <div style={{ textAlign: "center", padding: 60, color: "#4a5a6a" }}><div style={{ fontSize: 48, marginBottom: 12 }}>&#128237;</div><p>No submissions yet.</p></div>
       ) : (
         <div style={{ overflowX: "auto" }}>
           <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
-            <thead><tr style={{ borderBottom: "1px solid rgba(200,169,110,0.3)" }}>{["Full Name", "Class", "Phone", "Band", "Branch", "Date", "Language", "Reasoning", "Num. Sense", "Adj.", "Hobby", "Actions"].map(h => (<th key={h} style={{ padding: "8px 12px", textAlign: "left", color: "#c8a96e", fontWeight: 600, whiteSpace: "nowrap" }}>{h}</th>))}</tr></thead>
+            <thead>
+              <tr style={{ borderBottom: "1px solid rgba(200,169,110,0.3)" }}>
+                <th style={{ padding: "8px 10px", width: 36 }}>
+                  <input type="checkbox" checked={allSelected} onChange={toggleAll} title="Select all visible" style={{ accentColor: "#c8a96e", width: 15, height: 15, cursor: "pointer" }} />
+                </th>
+                {["Full Name", "Class", "Phone", "Band", "Branch", "Date", "Language", "Reasoning", "Num. Sense", "Adj.", "Hobby", "Actions"].map(h => (
+                  <th key={h} style={{ padding: "8px 12px", textAlign: "left", color: "#c8a96e", fontWeight: 600, whiteSpace: "nowrap" }}>{h}</th>
+                ))}
+              </tr>
+            </thead>
             <tbody>
-              {filtered.map((s, i) => (
-                <tr key={i} style={{ borderBottom: "1px solid rgba(255,255,255,0.05)", background: i % 2 === 0 ? "rgba(255,255,255,0.02)" : "transparent" }}>
-                  <td style={{ padding: "8px 12px", color: "#e8e0d5", fontWeight: 600 }}>{s.name}</td>
-                  <td style={{ padding: "8px 12px", color: "#8a9bb0" }}>Gr. {s.grade}</td>
-                  <td style={{ padding: "8px 12px", color: "#8a9bb0" }}>{s.phone || "—"}</td>
-                  <td style={{ padding: "8px 12px" }}><LevelBadge label={`Band ${s.band}`} /></td>
-                  <td style={{ padding: "8px 12px", color: "#8a9bb0" }}>{s.branch}</td>
-                  <td style={{ padding: "8px 12px", color: "#8a9bb0" }}>{s.date}</td>
-                  <td style={{ padding: "8px 12px" }}><LevelBadge label={s.scores?.A?.level} /></td>
-                  <td style={{ padding: "8px 12px" }}><LevelBadge label={s.scores?.B?.level} /></td>
-                  <td style={{ padding: "8px 12px" }}><LevelBadge label={s.scores?.C?.level} /></td>
-                  <td style={{ padding: "8px 12px", color: "#8a9bb0", fontSize: 11 }}>{s.likert?.emotionalLevel?.split(" ")[0] || "-"}</td>
-                  <td style={{ padding: "8px 12px", color: "#8a9bb0", fontSize: 11 }}>{s.hobbyProfile?.split(" ")[0] || "-"}</td>
-                  <td style={{ padding: "8px 6px", whiteSpace: "nowrap" }}>
-                    <div style={{ display: "flex", gap: 6 }}>
-                      <button onClick={() => setSelectedReport(s)} style={{ background: "#1a3a6b", color: "#8ab0e0", border: "none", borderRadius: 6, padding: "5px 9px", cursor: "pointer", fontSize: 11, fontWeight: 600 }} title="View & Print Report">📄</button>
-                      <button onClick={() => downloadResponseKey(s)} style={{ background: "rgba(200,169,110,0.15)", color: "#c8a96e", border: "1px solid rgba(200,169,110,0.3)", borderRadius: 6, padding: "5px 9px", cursor: "pointer", fontSize: 11, fontWeight: 600 }} title="Download student's full response key as CSV">🗝</button>
-                      <button onClick={() => deleteSubmission(s.id)} style={{ background: "rgba(200,50,50,0.2)", color: "#e07070", border: "1px solid rgba(200,50,50,0.3)", borderRadius: 6, padding: "5px 9px", cursor: "pointer", fontSize: 11, fontWeight: 600 }} title="Delete Response">🗑</button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+              {filtered.map((s, i) => {
+                const isChecked = selected.has(s.id);
+                return (
+                  <tr key={i} style={{ borderBottom: "1px solid rgba(255,255,255,0.05)", background: isChecked ? "rgba(200,50,50,0.08)" : i % 2 === 0 ? "rgba(255,255,255,0.02)" : "transparent" }}>
+                    <td style={{ padding: "8px 10px", textAlign: "center" }}>
+                      <input type="checkbox" checked={isChecked} onChange={() => toggleOne(s.id)} style={{ accentColor: "#e07070", width: 15, height: 15, cursor: "pointer" }} />
+                    </td>
+                    <td style={{ padding: "8px 12px", color: "#e8e0d5", fontWeight: 600 }}>{s.name}</td>
+                    <td style={{ padding: "8px 12px", color: "#8a9bb0" }}>Gr. {s.grade}</td>
+                    <td style={{ padding: "8px 12px", color: "#8a9bb0" }}>{s.phone || "&#8212;"}</td>
+                    <td style={{ padding: "8px 12px" }}><LevelBadge label={`Band ${s.band}`} /></td>
+                    <td style={{ padding: "8px 12px", color: "#8a9bb0" }}>{s.branch}</td>
+                    <td style={{ padding: "8px 12px", color: "#8a9bb0" }}>{s.date}</td>
+                    <td style={{ padding: "8px 12px" }}><LevelBadge label={s.scores?.A?.level} /></td>
+                    <td style={{ padding: "8px 12px" }}><LevelBadge label={s.scores?.B?.level} /></td>
+                    <td style={{ padding: "8px 12px" }}><LevelBadge label={s.scores?.C?.level} /></td>
+                    <td style={{ padding: "8px 12px", color: "#8a9bb0", fontSize: 11 }}>{s.likert?.emotionalLevel?.split(" ")[0] || "-"}</td>
+                    <td style={{ padding: "8px 12px", color: "#8a9bb0", fontSize: 11 }}>{s.hobbyProfile?.split(" ")[0] || "-"}</td>
+                    <td style={{ padding: "8px 6px", whiteSpace: "nowrap" }}>
+                      <div style={{ display: "flex", gap: 6 }}>
+                        <button onClick={() => setSelectedReport(s)} style={{ background: "#1a3a6b", color: "#8ab0e0", border: "none", borderRadius: 6, padding: "5px 9px", cursor: "pointer", fontSize: 11, fontWeight: 600 }} title="View Report">&#128196;</button>
+                        <button onClick={() => downloadResponseKey(s)} style={{ background: "rgba(200,169,110,0.15)", color: "#c8a96e", border: "1px solid rgba(200,169,110,0.3)", borderRadius: 6, padding: "5px 9px", cursor: "pointer", fontSize: 11, fontWeight: 600 }} title="Response Key">&#128221;</button>
+                        <button onClick={() => deleteSubmission(s.id)} style={{ background: "rgba(200,50,50,0.2)", color: "#e07070", border: "1px solid rgba(200,50,50,0.3)", borderRadius: 6, padding: "5px 9px", cursor: "pointer", fontSize: 11, fontWeight: 600 }} title="Delete">&#128465;</button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>

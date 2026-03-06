@@ -44,7 +44,6 @@ app.post('/api/submissions', async (req, res) => {
 // 3. Fetch all Submissions (Admin)
 app.get('/api/submissions', async (req, res) => {
     try {
-        // Sort by most recent first
         const submissions = await Submission.find().sort({ timestamp: -1 });
         res.status(200).json({ success: true, data: submissions });
     } catch (error) {
@@ -53,7 +52,7 @@ app.get('/api/submissions', async (req, res) => {
     }
 });
 
-// 4. Delete a Submission (Admin)
+// 4. Delete a single Submission (Admin)
 app.delete('/api/submissions/:id', async (req, res) => {
     try {
         const result = await Submission.findOneAndDelete({ id: req.params.id });
@@ -67,8 +66,23 @@ app.delete('/api/submissions/:id', async (req, res) => {
     }
 });
 
-// 5. Admin Timer Settings (Basic In-Memory Cache for now unless they want a DB Collection)
-let adminSettings = { globalTimeLimit: 30 }; // Fallback
+// 4b. Bulk Delete Submissions (Admin)
+app.post('/api/submissions/bulk-delete', async (req, res) => {
+    try {
+        const { ids } = req.body;
+        if (!ids || !Array.isArray(ids) || ids.length === 0) {
+            return res.status(400).json({ success: false, message: 'No IDs provided' });
+        }
+        const result = await Submission.deleteMany({ id: { $in: ids } });
+        res.status(200).json({ success: true, deleted: result.deletedCount });
+    } catch (error) {
+        console.error("Bulk Delete Error:", error);
+        res.status(500).json({ success: false, message: 'Failed to bulk delete', error: error.message });
+    }
+});
+
+// 5. Admin Timer Settings
+let adminSettings = { globalTimeLimit: 30 };
 
 app.get('/api/settings', (req, res) => {
     res.status(200).json({ success: true, data: adminSettings });
