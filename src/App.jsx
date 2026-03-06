@@ -28,6 +28,16 @@ const QUESTIONS = {
       passage: "“Meena was very excited about her school’s annual science exhibition. She worked hard for many days to prepare her project on saving electricity. She made colourful charts, wrote neat explanations, and even built a small model using waste material. On the day of the exhibition, Meena felt nervous, but she spoke confidently when visitors asked her questions. Her teachers praised her effort and encouraged other students to learn from her dedication.”",
       questions: [
         { id: "A1", type: "mcq", text: "Why was Meena excited about the science exhibition?", options: ["She won a prize", "She worked on a project about saving electricity", "She met her friends", "She got a day off school"], answer: 1 },
+        {
+          id: "A2_IMG",
+          type: "image-written",
+          image: "/q2-band3.png",
+          text: "Look at the picture carefully and answer the following:",
+          subQuestions: [
+            { id: "A2_IMG_a", label: "What are the students doing? (Write any 4 responses)", placeholder: "Write any 4 responses here..." },
+            { id: "A2_IMG_b", label: "Describe the above-mentioned picture in five sentences.", placeholder: "Write your description in 5 sentences here..." }
+          ]
+        },
         { id: "A2", type: "mcq", text: "What was Meena's project about?", options: ["Plants and trees", "Saving electricity", "Water conservation", "Animal life"], answer: 1 },
         { id: "A3", type: "mcq", text: "How did Meena prepare for the exhibition?", options: ["She read books only", "She asked her teacher for help", "She made charts and wrote explanations", "She did nothing special"], answer: 2 },
         { id: "A4", type: "mcq", text: "Match: 'Responsible' means:", options: ["Very tired", "Very old", "Having duty", "Wanting to know more"], answer: 2 },
@@ -1175,7 +1185,7 @@ function ExamSection({ info, answers, setAnswers, currentSection, setCurrentSect
           <LikertSection questions={section.questions} answers={answers} setAnswer={setAnswer} />
         ) : (
           section?.questions?.map((q, i) => (
-            <QuestionBlock key={q.id} q={q} index={i} answer={answers[q.id]} setAnswer={(v) => setAnswer(q.id, v)} />
+            <QuestionBlock key={q.id} q={q} index={i} answer={answers[q.id]} setAnswer={(v) => setAnswer(q.id, v)} answers={answers} setAnswers={setAnswers} />
           ))
         )}
       </div>
@@ -1253,10 +1263,18 @@ function ExamSection({ info, answers, setAnswers, currentSection, setCurrentSect
   );
 }
 
-function QuestionBlock({ q, index, answer, setAnswer }) {
+function QuestionBlock({ q, index, answer, setAnswer, answers, setAnswers }) {
+  // For image-written: check if at least one sub-question is answered
+  const imgAttempted = q.type === "image-written"
+    ? q.subQuestions?.some(sq => answers?.[sq.id] && answers[sq.id] !== "")
+    : undefined;
+  const isUnattempted = q.type === "image-written"
+    ? !imgAttempted
+    : (answer === undefined || answer === "");
+
   return (
     <div style={{ marginBottom: 28, paddingBottom: 24, borderBottom: "1px solid rgba(255,255,255,0.05)", position: "relative" }}>
-      {answer === undefined || answer === "" ? (
+      {isUnattempted ? (
         <div style={{ position: "absolute", right: 0, top: 0, background: "rgba(200,50,50,0.15)", color: "#e07070", padding: "2px 8px", borderRadius: 4, fontSize: 11, border: "1px solid rgba(200,50,50,0.3)" }}>
           Unattempted
         </div>
@@ -1264,6 +1282,37 @@ function QuestionBlock({ q, index, answer, setAnswer }) {
       <p style={{ color: "#c8d8e8", fontSize: 14, lineHeight: 1.7, margin: "0 0 12px", paddingRight: 80 }}>
         <strong style={{ color: "#c8a96e" }}>Q{index + 1}.</strong> {q.text}
       </p>
+
+      {/* ── Image-based written question ── */}
+      {q.type === "image-written" && (
+        <div>
+          <img
+            src={q.image}
+            alt="Question image"
+            style={{ width: "100%", maxWidth: 520, borderRadius: 8, marginBottom: 18, border: "2px solid rgba(200,169,110,0.3)", display: "block" }}
+          />
+          {q.subQuestions?.map((sq, si) => (
+            <div key={sq.id} style={{ marginBottom: 16 }}>
+              <p style={{ color: "#c8d8e8", fontSize: 13, marginBottom: 8, fontWeight: 600 }}>
+                {String.fromCharCode(96 + si + 1)}) {sq.label}
+              </p>
+              <textarea
+                placeholder={sq.placeholder}
+                value={answers?.[sq.id] || ""}
+                onChange={e => setAnswers && setAnswers(prev => ({ ...prev, [sq.id]: e.target.value }))}
+                rows={si === 0 ? 3 : 5}
+                spellCheck={false}
+                autoCorrect="off"
+                autoCapitalize="off"
+                autoComplete="off"
+                data-gramm="false"
+                style={{ width: "100%", padding: "10px 14px", borderRadius: 8, border: "1px solid rgba(200,169,110,0.25)", background: "rgba(255,255,255,0.05)", color: "#e8e0d5", fontSize: 13, resize: "vertical", boxSizing: "border-box", lineHeight: 1.6 }}
+              />
+            </div>
+          ))}
+        </div>
+      )}
+
       {q.type === "mcq" && q.options && (
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           {q.options.map((opt, j) => (
@@ -1401,13 +1450,14 @@ function ReportPage({ submission, setView, isAdmin }) {
   // Band-specific indicator tables
   const indicatorsA = {
     3: [
-      ["Reading Comprehension", "Q1–Q5", AL],
-      ["Vocabulary Understanding", "Q4, Q5", AL],
-      ["Grammar Usage", "Q6", AL],
-      ["Parts of Speech Identification", "Q8", AL],
-      ["Punctuation Awareness", "Q9", AL],
-      ["Adverb / Word Usage", "Q10", AL],
-      ["Written Expression (Creative Writing)", "Q11", AL],
+      ["Reading Comprehension", "Q1", AL],
+      ["Picture Description – Oral/Written Response", "Q2", AL],
+      ["Vocabulary Use", "Q2", AL, "Emerging: Uses limited or repetitive words · Developing: Uses familiar words appropriately · Secure: Uses a range of age-appropriate words confidently"],
+      ["Grammar Usage", "Q3–Q6", AL],
+      ["Parts of Speech Identification", "Q9", AL],
+      ["Punctuation Awareness", "Q10", AL],
+      ["Adverb / Word Usage", "Q11", AL],
+      ["Written Expression (Creative Writing)", "Q12", AL],
     ],
     4: [
       ["Reading Comprehension", "Q1–Q5", AL],
@@ -1514,11 +1564,14 @@ function ReportPage({ submission, setView, isAdmin }) {
           </tr>
         </thead>
         <tbody>
-          {indicators.map(([ind, ref, lv], i) => {
+          {indicators.map(([ind, ref, lv, rubric], i) => {
             const c = levelColor(lv);
             return (
               <tr key={i} style={{ background: i % 2 === 0 ? "#fff" : "#f8fafc" }}>
-                <td style={tdStyle}>{ind}</td>
+                <td style={tdStyle}>
+                  {ind}
+                  {rubric && <div style={{ fontSize: 10, color: "#6a7a8a", marginTop: 4, fontStyle: "italic", lineHeight: 1.5 }}>{rubric}</div>}
+                </td>
                 <td style={{ ...tdStyle, textAlign: "center" }}>
                   <span style={{ display: "inline-block", padding: "3px 14px", borderRadius: 5, fontWeight: 700, fontSize: 11, background: c.bg, color: c.color, border: `1px solid ${c.border}` }}>{lv}</span>
                 </td>
