@@ -1122,7 +1122,34 @@ function ExamSection({ info, answers, setAnswers, currentSection, setCurrentSect
   const sections = Object.keys(QUESTIONS[band] || {});
   const section = QUESTIONS[band]?.[currentSection];
   const [confirmSubmit, setConfirmSubmit] = useState(false);
-  const [confirmNav, setConfirmNav] = useState(null); // stores the target section to navigate to
+  const [confirmNav, setConfirmNav] = useState(null);
+  const [camActive, setCamActive] = useState(false);
+  const [camError, setCamError] = useState(false);
+  const videoRef = useRef(null);
+  const streamRef = useRef(null);
+
+  // Start webcam on mount
+  useEffect(() => {
+    async function startCam() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: { width: 160, height: 120, facingMode: "user" }, audio: false });
+        streamRef.current = stream;
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+        }
+        setCamActive(true);
+      } catch (err) {
+        console.warn("Webcam not available:", err);
+        setCamError(true);
+      }
+    }
+    startCam();
+    return () => {
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(t => t.stop());
+      }
+    };
+  }, []);
 
   function setAnswer(id, val) {
     setAnswers(a => ({ ...a, [id]: val }));
@@ -1153,6 +1180,15 @@ function ExamSection({ info, answers, setAnswers, currentSection, setCurrentSect
           <div style={{ color: "#4a6a5a", fontSize: 12 }}>{info.name} · Grade {info.grade} · {info.branch}</div>
         </div>
         <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+          {/* Webcam preview */}
+          <div style={{ position: "relative", width: 64, height: 48, borderRadius: 8, overflow: "hidden", border: camActive ? "2px solid #225632" : "2px solid rgba(254,203,8,0.3)", background: "#000", flexShrink: 0 }}>
+            {camError ? (
+              <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16, color: "#8ab0a0" }}>📷</div>
+            ) : (
+              <video ref={videoRef} autoPlay muted playsInline style={{ width: "100%", height: "100%", objectFit: "cover", transform: "scaleX(-1)" }} />
+            )}
+            <div style={{ position: "absolute", top: 2, right: 3, width: 7, height: 7, borderRadius: "50%", background: camActive ? "#22c55e" : "#ef4444", boxShadow: camActive ? "0 0 4px #22c55e" : "0 0 4px #ef4444" }} />
+          </div>
           <div style={{ background: timerWarning ? "rgba(200,50,50,0.2)" : "rgba(255,255,255,0.05)", borderRadius: 8, padding: "6px 14px", color: timerWarning ? "#e07070" : "#FECB08", fontFamily: "monospace", fontSize: 16, border: timerWarning ? "1px solid rgba(200,50,50,0.4)" : "none" }}>
             {remaining !== null ? `⏱ ${remMins}:${remSecs}` : `⏱ ${mins}:${secs}`}
             {remaining !== null && <span style={{ fontSize: 10, marginLeft: 4, opacity: 0.7 }}>left</span>}
