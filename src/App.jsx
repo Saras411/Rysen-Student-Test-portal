@@ -1186,7 +1186,7 @@ function ExamSection({ info, answers, setAnswers, currentSection, setCurrentSect
         </div>
         <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
           {/* Webcam preview */}
-          <div style={{ position: "relative", width: 64, height: 48, borderRadius: 8, overflow: "hidden", border: camActive ? "2px solid #225632" : "2px solid rgba(254,203,8,0.3)", background: "#000", flexShrink: 0 }}>
+          <div style={{ position: "relative", width: 130, height: 98, borderRadius: 10, overflow: "hidden", border: camActive ? "2px solid #225632" : "2px solid rgba(254,203,8,0.3)", background: "#000", flexShrink: 0 }}>
             {camError ? (
               <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16, color: "#8ab0a0" }}>📷</div>
             ) : (
