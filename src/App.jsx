@@ -949,7 +949,7 @@ function ExamPage({ setView, settings }) {
     }
   }, [timer, step, timeLimitSecs]);
 
-  function startExam() {
+  async function startExam() {
     if (!info.name.trim() || !info.phone.trim() || !info.grade || !info.branch || !info.band) {
       alert("Please fill in all fields before starting.");
       return;
@@ -957,6 +957,15 @@ function ExamPage({ setView, settings }) {
     const phoneDigits = info.phone.replace(/\D/g, "");
     if (phoneDigits.length !== 10) {
       alert("Please enter a valid 10-digit phone number.");
+      return;
+    }
+    // Camera is compulsory — request permission before starting
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: { width: 160, height: 120, facingMode: "user" }, audio: false });
+      // Store stream so ExamSection can use it
+      window.__rysenCamStream = stream;
+    } catch (err) {
+      alert("\u26a0\ufe0f Camera access is required to start the assessment.\n\nPlease allow camera permission in your browser and try again.");
       return;
     }
     setStep("exam");
@@ -1128,25 +1137,21 @@ function ExamSection({ info, answers, setAnswers, currentSection, setCurrentSect
   const videoRef = useRef(null);
   const streamRef = useRef(null);
 
-  // Start webcam on mount
+  // Use the pre-started webcam stream
   useEffect(() => {
-    async function startCam() {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: { width: 160, height: 120, facingMode: "user" }, audio: false });
-        streamRef.current = stream;
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-        }
-        setCamActive(true);
-      } catch (err) {
-        console.warn("Webcam not available:", err);
-        setCamError(true);
+    if (window.__rysenCamStream) {
+      streamRef.current = window.__rysenCamStream;
+      if (videoRef.current) {
+        videoRef.current.srcObject = window.__rysenCamStream;
       }
+      setCamActive(true);
+    } else {
+      setCamError(true);
     }
-    startCam();
     return () => {
       if (streamRef.current) {
         streamRef.current.getTracks().forEach(t => t.stop());
+        window.__rysenCamStream = null;
       }
     };
   }, []);
