@@ -1491,9 +1491,17 @@ function ReportPage({ submission, setView, isAdmin }) {
   const AL = lvl("A"); const BL = lvl("B"); const CL = lvl("C");
 
   // Per-indicator level: score specific question IDs individually
-  const bandQ = QUESTIONS[s.band];
+  const bandQ = QUESTIONS[s.band] || QUESTIONS[Number(s.band)];
+  // Normalise answers: Mongoose Map -> plain object
+  const rawAns = s.answers || {};
+  const ans = typeof rawAns.toJSON === "function" ? rawAns.toJSON() : (rawAns._doc || rawAns);
+
   function qLvl(qIds) {
-    if (!s.answers || !bandQ) return "Emerging";
+    if (!ans || Object.keys(ans).length === 0 || !bandQ) {
+      // Fallback: no individual answers available — return section-level score
+      const sec = qIds[0]?.[0]; // "A1" -> "A"
+      return s.scores?.[sec]?.level || "Emerging";
+    }
     // Gather questions from all sections that match the given IDs
     const allQs = Object.values(bandQ).flatMap(sec => sec.questions || []);
     const matched = allQs.filter(q => qIds.includes(q.id));
@@ -1504,9 +1512,9 @@ function ReportPage({ submission, setView, isAdmin }) {
       if (written.length > 0) {
         const answered = written.filter(q => {
           if (q.type === "image-written" && q.subQuestions) {
-            return q.subQuestions.some(sq => s.answers[sq.id] && s.answers[sq.id].trim() !== "");
+            return q.subQuestions.some(sq => ans[sq.id] && String(ans[sq.id]).trim() !== "");
           }
-          return s.answers[q.id] && String(s.answers[q.id]).trim() !== "";
+          return ans[q.id] && String(ans[q.id]).trim() !== "";
         });
         if (answered.length === written.length) return "Secure";
         if (answered.length > 0) return "Developing";
@@ -1515,7 +1523,11 @@ function ReportPage({ submission, setView, isAdmin }) {
       return "Emerging";
     }
     let correct = 0;
-    scorable.forEach(q => { if (s.answers[q.id] === q.answer) correct++; });
+    scorable.forEach(q => {
+      const studentAns = ans[q.id];
+      // Use loose comparison: "1" == 1
+      if (studentAns !== undefined && studentAns !== null && Number(studentAns) === q.answer) correct++;
+    });
     const pct = correct / scorable.length;
     if (pct >= 0.75) return "Secure";
     if (pct >= 0.45) return "Developing";
