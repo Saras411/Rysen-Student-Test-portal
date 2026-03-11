@@ -1490,6 +1490,38 @@ function ReportPage({ submission, setView, isAdmin }) {
   const lvl = (sec) => s.scores?.[sec]?.level || "Emerging";
   const AL = lvl("A"); const BL = lvl("B"); const CL = lvl("C");
 
+  // Per-indicator level: score specific question IDs individually
+  const bandQ = QUESTIONS[s.band];
+  function qLvl(qIds) {
+    if (!s.answers || !bandQ) return "Emerging";
+    // Gather questions from all sections that match the given IDs
+    const allQs = Object.values(bandQ).flatMap(sec => sec.questions || []);
+    const matched = allQs.filter(q => qIds.includes(q.id));
+    const scorable = matched.filter(q => q.type === "mcq" && q.answer >= 0);
+    if (scorable.length === 0) {
+      // For written questions, check if answered
+      const written = matched.filter(q => q.type === "written" || q.type === "image-written");
+      if (written.length > 0) {
+        const answered = written.filter(q => {
+          if (q.type === "image-written" && q.subQuestions) {
+            return q.subQuestions.some(sq => s.answers[sq.id] && s.answers[sq.id].trim() !== "");
+          }
+          return s.answers[q.id] && String(s.answers[q.id]).trim() !== "";
+        });
+        if (answered.length === written.length) return "Secure";
+        if (answered.length > 0) return "Developing";
+        return "Emerging";
+      }
+      return "Emerging";
+    }
+    let correct = 0;
+    scorable.forEach(q => { if (s.answers[q.id] === q.answer) correct++; });
+    const pct = correct / scorable.length;
+    if (pct >= 0.75) return "Secure";
+    if (pct >= 0.45) return "Developing";
+    return "Emerging";
+  }
+
   // ── Likert adjustment levels: prefer stored string, fallback to recalculate ──
   const computedLikert = (() => {
     // If both level strings exist, use them directly
@@ -1515,42 +1547,42 @@ function ReportPage({ submission, setView, isAdmin }) {
   // Band-specific indicator tables
   const indicatorsA = {
     3: [
-      ["Reading Comprehension", "Q1", AL],
-      ["Picture Description – Oral/Written Response", "Q2", AL],
-      ["Vocabulary Use", "Q2", AL, "Emerging: Uses limited or repetitive words · Developing: Uses familiar words appropriately · Secure: Uses a range of age-appropriate words confidently"],
-      ["Grammar Usage", "Q3–Q6", AL],
-      ["Parts of Speech Identification", "Q9", AL],
-      ["Punctuation Awareness", "Q10", AL],
-      ["Adverb / Word Usage", "Q11", AL],
-      ["Written Expression (Creative Writing)", "Q12", AL],
+      ["Reading Comprehension", "Q1", qLvl(["A1"])],
+      ["Picture Description – Oral/Written Response", "Q2", qLvl(["A2_IMG"])],
+      ["Vocabulary Use", "Q2", qLvl(["A2_IMG"]), "Emerging: Uses limited or repetitive words · Developing: Uses familiar words appropriately · Secure: Uses a range of age-appropriate words confidently"],
+      ["Grammar Usage", "Q3–Q6", qLvl(["A2","A3","A4","A5"])],
+      ["Parts of Speech Identification", "Q8", qLvl(["A8"])],
+      ["Punctuation Awareness", "Q9", qLvl(["A9"])],
+      ["Adverb / Word Usage", "Q10", qLvl(["A10"])],
+      ["Written Expression (Creative Writing)", "Q11", qLvl(["A11"])],
     ],
     4: [
-      ["Reading Comprehension", "Q1–Q5", AL],
-      ["Vocabulary Understanding", "Q4, Q7", AL],
-      ["Grammar Usage", "Q6, Q9, Q10", AL],
-      ["Sentence Structure Awareness", "Q6", AL],
-      ["Parts of Speech Identification", "Q8", AL],
-      ["Punctuation Awareness", "Q9", AL],
-      ["Written Expression (Creative Writing)", "Q11 – Letter Writing", AL],
-      ["Organisation & Coherence", "Q11", AL],
-      ["Vocabulary in Writing", "Q11", AL],
+      ["Reading Comprehension", "Q1–Q5", qLvl(["A1","A2","A3","A4","A5"])],
+      ["Vocabulary Understanding", "Q4, Q7", qLvl(["A4","A7"])],
+      ["Grammar Usage", "Q6, Q9, Q10", qLvl(["A6","A9","A10"])],
+      ["Sentence Structure Awareness", "Q6", qLvl(["A6"])],
+      ["Parts of Speech Identification", "Q8", qLvl(["A8"])],
+      ["Punctuation Awareness", "Q9", qLvl(["A9"])],
+      ["Written Expression (Creative Writing)", "Q11 – Letter Writing", qLvl(["A11"])],
+      ["Organisation & Coherence", "Q11", qLvl(["A11"])],
+      ["Vocabulary in Writing", "Q11", qLvl(["A11"])],
     ],
     5: [
-      ["Reading Comprehension", "Q1–Q5", AL],
-      ["Vocabulary & Idiom Understanding", "Q7", AL],
-      ["Grammar – Reported Speech", "Q6", AL],
-      ["Narrative Writing", "Q8", AL],
-      ["Diary Writing", "Q9", AL],
+      ["Reading Comprehension", "Q1–Q5", qLvl(["A1","A2","A3","A4","A5"])],
+      ["Vocabulary & Idiom Understanding", "Q7", qLvl(["A7"])],
+      ["Grammar – Reported Speech", "Q6", qLvl(["A6"])],
+      ["Narrative Writing", "Q8", qLvl(["A8"])],
+      ["Diary Writing", "Q9", qLvl(["A9"])],
     ],
   };
 
   const indicatorsB = {
     3: [
-      ["Pattern Completion", "Q1", BL],
-      ["Classification / Odd One Out", "Q2", BL],
-      ["Sequencing & Logical Order", "Q3", BL],
-      ["Shape Reasoning", "Q4", BL],
-      ["Deductive Reasoning", "Q5", BL],
+      ["Pattern Completion", "Q1", qLvl(["B1"])],
+      ["Classification / Odd One Out", "Q2", qLvl(["B2"])],
+      ["Sequencing & Logical Order", "Q3", qLvl(["B3"])],
+      ["Shape Reasoning", "Q4", qLvl(["B4"])],
+      ["Deductive Reasoning", "Q5", qLvl(["B5"])],
     ],
     4: [
       ["Identifying the Odd One Out", "Q12", BL],
@@ -1562,13 +1594,13 @@ function ReportPage({ submission, setView, isAdmin }) {
       ["Coding–Decoding / Hard Logical Reasoning", "Q18", BL],
     ],
     5: [
-      ["Deductive Reasoning", "Q10", BL],
-      ["Syllogism", "Q11", BL],
-      ["Number Series Completion", "Q12", BL],
-      ["Calendar & Day Logic", "Q13", BL],
-      ["Logical Fallacy Identification", "Q14", BL],
-      ["Analogy", "Q15", BL],
-      ["Assumption & Evidence", "Q16", BL],
+      ["Deductive Reasoning", "Q10", qLvl(["B1"])],
+      ["Syllogism", "Q11", qLvl(["B2"])],
+      ["Number Series Completion", "Q12", qLvl(["B3"])],
+      ["Calendar & Day Logic", "Q13", qLvl(["B4"])],
+      ["Logical Fallacy Identification", "Q14", qLvl(["B5"])],
+      ["Analogy", "Q15", qLvl(["B6"])],
+      ["Assumption & Evidence", "Q16", qLvl(["B7"])],
     ],
   };
 
@@ -1588,14 +1620,14 @@ function ReportPage({ submission, setView, isAdmin }) {
       ["Remainder Theorem / Logical Reasoning", "Q25", CL],
     ],
     5: [
-      ["Ordering Fractions & Decimals", "Q17", CL],
-      ["Percentage & Discount", "Q18", CL],
-      ["Ratio & Proportion", "Q19", CL],
-      ["Number Patterns", "Q20", CL],
-      ["Perimeter & Mensuration", "Q21", CL],
-      ["Number Properties", "Q22", CL],
-      ["Speed, Distance & Time", "Q23", CL],
-      ["Percentage Application", "Q24", CL],
+      ["Ordering Fractions & Decimals", "Q17", qLvl(["C1"])],
+      ["Percentage & Discount", "Q18", qLvl(["C2"])],
+      ["Ratio & Proportion", "Q19", qLvl(["C3"])],
+      ["Number Patterns", "Q20", qLvl(["C4"])],
+      ["Perimeter & Mensuration", "Q21", qLvl(["C5"])],
+      ["Number Properties", "Q22", qLvl(["C6"])],
+      ["Speed, Distance & Time", "Q23", qLvl(["C7"])],
+      ["Percentage Application", "Q24", qLvl(["C8"])],
     ],
   };
 
