@@ -425,7 +425,32 @@ const ADMIN_PASS = "rysen2024";
 let submissionsDB = [];
 
 // ─── MAIN APP ────────────────────────────────────────────────────
-export default function App() {
+export default class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+  componentDidCatch(error, errorInfo) {
+    console.error("ErrorBoundary caught an error:", error, errorInfo);
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{ padding: "40px", color: "red", background: "#f8d7da" }}>
+          <h2>Something went wrong.</h2>
+          <pre>{this.state.error?.toString()}</pre>
+          <pre>{this.state.error?.stack}</pre>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
+function App() {
   const [view, setView] = useState("home");
   const [adminAuth, setAdminAuth] = useState(false);
   const [settings, setSettings] = useState(() => {
@@ -1905,5 +1930,14 @@ function ReportPage({ submission, setView, isAdmin }) {
         </div>
       )}
     </div>
+  );
+}
+
+
+export default function Root() {
+  return (
+    <ErrorBoundary>
+      <App />
+    </ErrorBoundary>
   );
 }
