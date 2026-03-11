@@ -1011,7 +1011,7 @@ function ExamPage({ setView, settings }) {
 
     setSubmission(sub);
     setIsSubmitting(false);
-    setStep("thankyou");
+    setStep("report");
   }
 
   if (step === "info") return <ExamInfoStep info={info} setInfo={setInfo} onStart={startExam} setView={setView} settings={settings} />;
@@ -1027,24 +1027,6 @@ function ExamPage({ setView, settings }) {
       onSubmit={submitExam}
       isSubmitting={isSubmitting}
     />
-  );
-  if (step === "thankyou") return (
-    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "40px 20px", background: "linear-gradient(135deg, #021a1a 0%, #033D4C 100%)" }}>
-      <div style={{ textAlign: "center", maxWidth: 520, padding: "48px 36px", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(254,203,8,0.2)", borderRadius: 16 }}>
-        <div style={{ fontSize: 56, marginBottom: 20 }}>\u2705</div>
-        <h2 style={{ color: "#FECB08", fontSize: 28, fontWeight: 700, marginBottom: 12 }}>Assessment Submitted!</h2>
-        <p style={{ color: "#a0d4b0", fontSize: 15, lineHeight: 1.7, marginBottom: 8 }}>
-          Thank you for completing the Baseline Assessment for Skill & Engagement.
-        </p>
-        <p style={{ color: "#8ab0a0", fontSize: 13, lineHeight: 1.7, marginBottom: 28 }}>
-          Your responses have been recorded successfully. The report will be reviewed by your teacher.
-        </p>
-        <div style={{ width: 60, height: 2, background: "linear-gradient(90deg, transparent, #FECB08, transparent)", margin: "0 auto 28px" }} />
-        <button onClick={() => setView("home")} style={{ background: "linear-gradient(135deg, #225632, #1a4528)", color: "#fff", border: "none", borderRadius: 10, padding: "13px 36px", fontSize: 15, fontWeight: 700, cursor: "pointer", letterSpacing: 0.5 }}>
-          \u2190 Back to Home
-        </button>
-      </div>
-    </div>
   );
   if (step === "report") return <ReportPage submission={submission} setView={setView} />;
 }
@@ -1487,20 +1469,45 @@ function ReportPage({ submission, setView, isAdmin }) {
   }
 
   // ── Per-indicator rubric levels based on scores ──
-  const lvl = (sec) => s.scores?.[sec]?.level || "Emerging";
+  // Normalise scores (may be Mongoose Map or plain object)
+  const _normScores = s.scores && typeof s.scores.toJSON === "function" ? s.scores.toJSON() : (s.scores || {});
+  const lvl = (sec) => {
+    const sd = _normScores[sec];
+    if (!sd) return "Emerging";
+    const d = sd && typeof sd.toJSON === "function" ? sd.toJSON() : sd;
+    return d?.level || "Emerging";
+  };
   const AL = lvl("A"); const BL = lvl("B"); const CL = lvl("C");
 
   // Per-indicator level: score specific question IDs individually
   const bandQ = QUESTIONS[s.band] || QUESTIONS[Number(s.band)];
-  // Normalise answers: Mongoose Map -> plain object
-  const rawAns = s.answers || {};
-  const ans = typeof rawAns.toJSON === "function" ? rawAns.toJSON() : (rawAns._doc || rawAns);
+
+  // Normalise answers from any format (plain obj, Mongoose Map, JSON)
+  const _norm = (v) => {
+    if (!v) return {};
+    if (typeof v.toJSON === "function") return v.toJSON();
+    if (v._doc) return v._doc;
+    if (v instanceof Map) return Object.fromEntries(v);
+    return v;
+  };
+  const ans = _norm(s.answers);
+
+  // Helper to get a value from ans (handles nested Map structures)
+  const getAns = (id) => {
+    const v = ans[id];
+    if (v === undefined || v === null) return undefined;
+    return v;
+  };
 
   function qLvl(qIds) {
-    if (!ans || Object.keys(ans).length === 0 || !bandQ) {
-      // Fallback: no individual answers available — return section-level score
+    if (!bandQ) return "Emerging";
+    const hasAnswers = ans && typeof ans === "object" && Object.keys(ans).length > 0;
+    if (!hasAnswers) {
+      // Fallback: use section-level score
       const sec = qIds[0]?.[0]; // "A1" -> "A"
-      return s.scores?.[sec]?.level || "Emerging";
+      const rawScores = _norm(s.scores);
+      const secData = _norm(rawScores[sec]);
+      return secData?.level || "Emerging";
     }
     // Gather questions from all sections that match the given IDs
     const allQs = Object.values(bandQ).flatMap(sec => sec.questions || []);
@@ -1512,9 +1519,13 @@ function ReportPage({ submission, setView, isAdmin }) {
       if (written.length > 0) {
         const answered = written.filter(q => {
           if (q.type === "image-written" && q.subQuestions) {
-            return q.subQuestions.some(sq => ans[sq.id] && String(ans[sq.id]).trim() !== "");
+            return q.subQuestions.some(sq => {
+              const a = getAns(sq.id);
+              return a !== undefined && String(a).trim() !== "";
+            });
           }
-          return ans[q.id] && String(ans[q.id]).trim() !== "";
+          const a = getAns(q.id);
+          return a !== undefined && String(a).trim() !== "";
         });
         if (answered.length === written.length) return "Secure";
         if (answered.length > 0) return "Developing";
@@ -1524,8 +1535,7 @@ function ReportPage({ submission, setView, isAdmin }) {
     }
     let correct = 0;
     scorable.forEach(q => {
-      const studentAns = ans[q.id];
-      // Use loose comparison: "1" == 1
+      const studentAns = getAns(q.id);
       if (studentAns !== undefined && studentAns !== null && Number(studentAns) === q.answer) correct++;
     });
     const pct = correct / scorable.length;
